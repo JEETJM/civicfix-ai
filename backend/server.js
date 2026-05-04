@@ -6,7 +6,11 @@ const morgan = require("morgan");
 
 const env = require("./config/env");
 const connectDB = require("./config/db");
+
 const healthRoutes = require("./routes/healthRoutes");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
@@ -30,6 +34,8 @@ if (env.NODE_ENV === "development") {
 
 /* API routes */
 app.use("/api/health", healthRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 /* Local backend test route only */
 if (env.NODE_ENV !== "production") {
