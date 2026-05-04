@@ -28,15 +28,20 @@ if (env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Welcome to CivicFix AI Backend",
-  });
-});
-
+/* API routes */
 app.use("/api/health", healthRoutes);
 
+/* Local backend test route only */
+if (env.NODE_ENV !== "production") {
+  app.get("/", (req, res) => {
+    res.status(200).json({
+      success: true,
+      message: "Welcome to CivicFix AI Backend",
+    });
+  });
+}
+
+/* Production: serve React frontend */
 if (env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../frontend/dist");
 
@@ -50,6 +55,7 @@ if (env.NODE_ENV === "production") {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
+
 app.use(notFound);
 app.use(errorHandler);
 
