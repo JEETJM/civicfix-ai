@@ -10,7 +10,8 @@ const connectDB = require("./config/db");
 const healthRoutes = require("./routes/healthRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
-
+const departmentRoutes = require("./routes/departmentRoutes");
+const complaintRoutes = require("./routes/complaintRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
@@ -36,7 +37,8 @@ if (env.NODE_ENV === "development") {
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/departments", departmentRoutes);
+app.use("/api/complaints", complaintRoutes);
 /* Local backend test route only */
 if (env.NODE_ENV !== "production") {
   app.get("/", (req, res) => {

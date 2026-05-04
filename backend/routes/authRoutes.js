@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   registerUser,
   loginUser,
@@ -7,9 +8,17 @@ const {
   updateMyProfile,
   changePassword,
 } = require("../controllers/authController");
+
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+router.get("/test", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Auth route is working",
+  });
+});
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
