@@ -37,17 +37,19 @@ app.get("/", (req, res) => {
 
 app.use("/api/health", healthRoutes);
 
-// Production: serve React frontend build from backend
 if (env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../frontend/dist");
 
   app.use(express.static(frontendPath));
 
-  app.get("*", (req, res) => {
+  app.use((req, res, next) => {
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
+
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
-
 app.use(notFound);
 app.use(errorHandler);
 
