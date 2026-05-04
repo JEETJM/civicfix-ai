@@ -1,61 +1,112 @@
 import { Route, Routes } from "react-router-dom";
-import { Sparkles } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
-function Home() {
-  return (
-    <main className="hero">
-      <section className="hero-card">
-        <div className="badge">
-          <Sparkles size={18} />
-          Smart City · Civic Tech · AI-Assisted Complaint Management
-        </div>
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
+import RoleBasedRoute from "./components/RoleBasedRoute";
 
-        <h1>
-          CivicFix <span>AI</span>
-        </h1>
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import DepartmentDashboard from "./pages/DepartmentDashboard";
+import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import MapView from "./pages/MapView";
+import ReportIssue from "./pages/ReportIssue";
+import MyComplaints from "./pages/MyComplaints";
+import TrackComplaint from "./pages/TrackComplaint";
+import NotFound from "./pages/NotFound";
 
-        <p>
-          An intelligent civic issue prioritization and resolution tracking
-          platform where citizens can report local problems with photo,
-          location, and description. The system supports AI priority scoring,
-          duplicate detection, department routing, heatmap tracking, and
-          verified resolution proof.
-        </p>
-
-        <div className="hero-actions">
-          <button className="btn btn-primary">Report an Issue</button>
-          <button className="btn btn-secondary">Track Complaint</button>
-        </div>
-
-        <div className="stats-grid">
-          <div className="stat-card">
-            <strong>10+</strong>
-            <span>Departments</span>
-          </div>
-          <div className="stat-card">
-            <strong>AI</strong>
-            <span>Priority Score</span>
-          </div>
-          <div className="stat-card">
-            <strong>OTP</strong>
-            <span>Secure Tracking</span>
-          </div>
-          <div className="stat-card">
-            <strong>Map</strong>
-            <span>Public Heatmap</span>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
-}
+import { USER_ROLES } from "./utils/rolePermissions";
 
 function App() {
   return (
     <div className="app-shell">
+      <Toaster position="top-right" />
+      <Navbar />
+
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/map" element={<MapView />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={[USER_ROLES.CITIZEN]}>
+                <UserDashboard />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+                <AdminDashboard />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/department-dashboard"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={[USER_ROLES.DEPARTMENT_OFFICER]}>
+                <DepartmentDashboard />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/super-admin-dashboard"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={[USER_ROLES.SUPER_ADMIN]}>
+                <SuperAdminDashboard />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/report-issue"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={[USER_ROLES.CITIZEN]}>
+                <ReportIssue />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-complaints"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={[USER_ROLES.CITIZEN]}>
+                <MyComplaints />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/track-complaint" element={<TrackComplaint />} />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
+
+      <Footer />
     </div>
   );
 }
