@@ -8,7 +8,7 @@ const { COMPLAINT_STATUS } = require("../constants/complaintStatus");
 const { USER_ROLES } = require("../constants/userRoles");
 const PriorityScore = require("../models/PriorityScore");
 const { analyzeAndSavePriority } = require("../services/aiPriorityService");
-
+const { detectAndSaveDuplicate } = require("../services/duplicateService");
 const createComplaint = async (req, res, next) => {
   try {
     const {
@@ -76,6 +76,8 @@ const createComplaint = async (req, res, next) => {
       updatedByRole: "system",
     });
 
+    const duplicateData = await detectAndSaveDuplicate({ complaint });
+
     if (department) {
       department.activeComplaints += 1;
       await department.save();
@@ -83,13 +85,24 @@ const createComplaint = async (req, res, next) => {
 
     const populatedComplaint = await Complaint.findById(complaint._id)
       .populate("reportedBy", "name email phone role")
-      .populate("assignedDepartmentId", "name category officerName email phone");
+      .populate("assignedDepartmentId", "name category officerName email phone")
+      .populate("duplicateOf", "complaintId title status aiScore department");
 
     return res.status(201).json({
       success: true,
-      message: "Complaint created and AI analyzed successfully.",
+      message: duplicateData.isDuplicate
+        ? "Complaint created, AI analyzed, and possible duplicate detected."
+        : "Complaint created and AI analyzed successfully.",
       complaint: populatedComplaint,
       priorityScore,
+      duplicate: {
+        isDuplicate: duplicateData.isDuplicate,
+        duplicateReport: duplicateData.duplicateReport,
+        originalComplaint: duplicateData.duplicateResult.originalComplaint || null,
+        similarityScore: duplicateData.duplicateResult.similarityScore || 0,
+        distanceInMeters: duplicateData.duplicateResult.distanceInMeters || null,
+        reason: duplicateData.duplicateResult.reason || "",
+      },
     });
   } catch (error) {
     next(error);
