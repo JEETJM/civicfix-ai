@@ -6,13 +6,15 @@ const { getDepartmentByCategory } = require("../utils/departmentMapper");
 const { createStatusTimeline } = require("../utils/statusTimeline");
 const { COMPLAINT_STATUS } = require("../constants/complaintStatus");
 const { USER_ROLES } = require("../constants/userRoles");
+const PriorityScore = require("../models/PriorityScore");
+const { analyzeAndSavePriority } = require("../services/aiPriorityService");
 
 const createComplaint = async (req, res, next) => {
   try {
     const {
       title,
       description,
-      category = "other",
+      category = "",
       imageUrl = "",
       location,
     } = req.body;
@@ -22,21 +24,38 @@ const createComplaint = async (req, res, next) => {
       throw new Error("Title, description and address are required.");
     }
 
-    const departmentName = getDepartmentByCategory(category);
+    const aiPreview = require("../utils/aiScoring").analyzeComplaintText({
+      title,
+      description,
+      selectedCategory: category,
+    });
+
+    const departmentName = aiPreview.department;
     const department = await Department.findOne({ name: departmentName });
 
     const complaint = await Complaint.create({
       complaintId: generateComplaintId(),
       title,
       description,
-      category,
+      category: aiPreview.category,
+      urgency: aiPreview.urgency,
+      aiScore: aiPreview.aiScore,
+      aiReason: aiPreview.aiReason,
       department: departmentName,
       assignedDepartmentId: department ? department._id : null,
       imageUrl,
       location,
-      status: COMPLAINT_STATUS.SUBMITTED,
+      status: COMPLAINT_STATUS.AI_ANALYZED,
       reportedBy: req.user._id,
       escalationDeadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+    });
+
+    const { priorityScore } = await analyzeAndSavePriority({
+      complaint,
+      complaintId: complaint.complaintId,
+      title,
+      description,
+      selectedCategory: aiPreview.category,
     });
 
     await createStatusTimeline({
@@ -46,6 +65,15 @@ const createComplaint = async (req, res, next) => {
       message: "Your complaint has been submitted successfully.",
       updatedBy: req.user._id,
       updatedByRole: req.user.role,
+    });
+
+    await createStatusTimeline({
+      complaint: complaint._id,
+      status: COMPLAINT_STATUS.AI_ANALYZED,
+      title: "AI Priority Analysis Completed",
+      message: `AI score ${aiPreview.aiScore}/100, urgency ${aiPreview.urgency}, department ${departmentName}.`,
+      updatedBy: req.user._id,
+      updatedByRole: "system",
     });
 
     if (department) {
@@ -59,14 +87,14 @@ const createComplaint = async (req, res, next) => {
 
     return res.status(201).json({
       success: true,
-      message: "Complaint created successfully.",
+      message: "Complaint created and AI analyzed successfully.",
       complaint: populatedComplaint,
+      priorityScore,
     });
   } catch (error) {
     next(error);
   }
 };
-
 const getMyComplaints = async (req, res, next) => {
   try {
     const complaints = await Complaint.find({ reportedBy: req.user._id })

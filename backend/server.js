@@ -13,7 +13,8 @@ const userRoutes = require("./routes/userRoutes");
 const departmentRoutes = require("./routes/departmentRoutes");
 const complaintRoutes = require("./routes/complaintRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
-
+const aiRoutes = require("./routes/aiRoutes");
+const priorityRoutes = require("./routes/priorityRoutes");
 const app = express();
 
 connectDB();
@@ -22,7 +23,7 @@ app.use(
   cors({
     origin: env.CLIENT_URL,
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json({ limit: "10mb" }));
@@ -39,6 +40,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/complaints", complaintRoutes);
+
+app.use("/api/ai", aiRoutes);
+app.use("/api/priority", priorityRoutes);
+
 /* Local backend test route only */
 if (env.NODE_ENV !== "production") {
   app.get("/", (req, res) => {
