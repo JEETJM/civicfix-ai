@@ -80,3 +80,46 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 1050px) {
+  .map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .marker-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .analytics-grid,
+  .admin-chart-preview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .map-header,
+  .analytics-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .map-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .map-summary-grid,
+  .marker-list-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container,
+  .map-token-missing,
+  .map-card {
+    height: 500px;
+    min-height: 500px;
+  }
+}

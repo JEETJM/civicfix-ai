@@ -13,6 +13,7 @@
     "axios": "^1.16.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.14.0",
+    "mapbox-gl": "^3.23.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-hot-toast": "^2.6.0",

@@ -11,6 +11,8 @@ import "./styles/auth.css";
 import "./styles/dashboard.css";
 import "./styles/responsive.css";
 import "./styles/complaint.css";
+import "./styles/map.css";
+import "./styles/responsive.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>

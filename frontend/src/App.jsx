@@ -22,7 +22,7 @@ import MyComplaints from "./pages/MyComplaints";
 import ComplaintDetails from "./pages/ComplaintDetails";
 import TrackComplaint from "./pages/TrackComplaint";
 import NotFound from "./pages/NotFound";
-
+import Analytics from "./pages/Analytics";
 import { USER_ROLES } from "./utils/rolePermissions";
 
 function App() {
@@ -46,6 +46,23 @@ function App() {
             <ProtectedRoute>
               <RoleBasedRoute allowedRoles={[USER_ROLES.CITIZEN]}>
                 <UserDashboard />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute
+                allowedRoles={[
+                  USER_ROLES.ADMIN,
+                  USER_ROLES.SUPER_ADMIN,
+                  USER_ROLES.DEPARTMENT_OFFICER,
+                ]}
+              >
+                <Analytics />
               </RoleBasedRoute>
             </ProtectedRoute>
           }
