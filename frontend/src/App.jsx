@@ -78,6 +78,7 @@ function App() {
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/super-admin-login" element={<SuperAdminLogin />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
 
         <Route
           path="/dashboard"

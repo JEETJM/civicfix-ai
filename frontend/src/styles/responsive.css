@@ -200,3 +200,107 @@
     width: 100%;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================================ */
+/* PHASE 14 RESPONSIVE FINAL FIX */
+/* ================================ */
+
+@media (max-width: 1180px) {
+  .dashboard-grid,
+  .admin-chart-preview,
+  .tracking-result-layout,
+  .department-details-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-card.big-card {
+    grid-column: auto !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-page,
+  .admin-panel-page,
+  .department-panel-page,
+  .tracking-page,
+  .feedback-page,
+  .escalation-page {
+    padding: 34px 5% !important;
+  }
+
+  .dashboard-header,
+  .admin-panel-header,
+  .department-panel-header,
+  .escalation-header,
+  .feedback-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .stats-grid,
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .two-column-form,
+  .department-filter-bar,
+  .admin-filter-bar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .wide-auth-card {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .stats-grid,
+  .dashboard-stats,
+  .proof-grid,
+  .department-info-grid,
+  .tracking-info-grid,
+  .feedback-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-header h1,
+  .admin-panel-header h1,
+  .department-panel-header h1,
+  .tracking-header h1,
+  .feedback-header h1,
+  .escalation-header h1 {
+    font-size: 36px !important;
+  }
+
+  .auth-card,
+  .wide-auth-card,
+  .tracking-card,
+  .dashboard-card,
+  .department-card,
+  .admin-table-card {
+    border-radius: 22px !important;
+  }
+
+  .primary-btn,
+  .auth-submit,
+  .dashboard-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-profile-pill div {
+    display: none;
+  }
+}

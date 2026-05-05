@@ -1,12 +1,21 @@
 import { Inbox } from "lucide-react";
 
-const EmptyState = ({ title = "No data found", message = "Nothing to show yet." }) => {
+const EmptyState = ({
+  title = "No data found",
+  message = "There is nothing to show right now.",
+  action = null,
+}) => {
   return (
-    <div className="empty-state">
-      <Inbox size={46} />
-      <h3>{title}</h3>
+    <section className="empty-state">
+      <div className="empty-icon">
+        <Inbox size={34} />
+      </div>
+
+      <h2>{title}</h2>
       <p>{message}</p>
-    </div>
+
+      {action}
+    </section>
   );
 };
 
