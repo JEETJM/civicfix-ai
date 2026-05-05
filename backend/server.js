@@ -19,6 +19,10 @@ const duplicateRoutes = require("./routes/duplicateRoutes");
 const heatmapRoutes = require("./routes/heatmapRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+
+const adminPanelRoutes = require("./routes/adminPanelRoutes");
+const superAdminPanelRoutes = require("./routes/superAdminPanelRoutes");
+
 const app = express();
 
 connectDB();
@@ -51,6 +55,9 @@ app.use("/api/duplicates", duplicateRoutes);
 app.use("/api/heatmap", heatmapRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/admin-panel", adminPanelRoutes);
+app.use("/api/super-admin-panel", superAdminPanelRoutes);
+
 /* Local backend test route only */
 if (env.NODE_ENV !== "production") {
   app.get("/", (req, res) => {

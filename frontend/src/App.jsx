@@ -25,6 +25,11 @@ import NotFound from "./pages/NotFound";
 import Analytics from "./pages/Analytics";
 import { USER_ROLES } from "./utils/rolePermissions";
 
+import AdminComplaints from "./pages/AdminComplaints";
+import AdminComplaintDetails from "./pages/AdminComplaintDetails";
+import ManageUsers from "./pages/ManageUsers";
+import ManageDepartments from "./pages/ManageDepartments";
+
 function App() {
   return (
     <div className="app-shell">
@@ -90,6 +95,53 @@ function App() {
           }
         />
 
+        <Route
+          path="/admin/complaints"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute
+                allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN]}
+              >
+                <AdminComplaints />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/complaints/:id"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute
+                allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN]}
+              >
+                <AdminComplaintDetails />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/super-admin/users"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={[USER_ROLES.SUPER_ADMIN]}>
+                <ManageUsers />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/super-admin/departments"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={[USER_ROLES.SUPER_ADMIN]}>
+                <ManageDepartments />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/super-admin-dashboard"
           element={

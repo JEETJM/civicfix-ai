@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BarChart3, GitMerge, ListChecks, MapPinned, Users } from "lucide-react";
+import {
+  BarChart3,
+  GitMerge,
+  ListChecks,
+  MapPinned,
+  Users,
+} from "lucide-react";
 import DashboardStats from "../components/DashboardStats";
 import useAuth from "../hooks/useAuth";
 import Loader from "../components/Loader";
@@ -74,12 +80,22 @@ const AdminDashboard = () => {
 
       <section className="dashboard-grid">
         <div className="dashboard-card big-card">
-          <h2>Admin Controls</h2>
+          {/* <h2>Admin Controls</h2>
           <div className="feature-list">
             <p>View all complaints</p>
             <p>Verify complaints</p>
             <p>Edit category and priority</p>
             <p>Merge duplicate complaints</p>
+            <p>Assign or reassign department</p>
+            <p>Monitor department progress</p>
+          </div>
+        </div> */}
+
+          <div className="feature-list">
+            <Link to="/admin/complaints">View & manage all complaints</Link>
+            <Link to="/analytics">View analytics dashboard</Link>
+            <Link to="/map">View public heatmap</Link>
+            <p>Verify complaints</p>
             <p>Assign or reassign department</p>
             <p>Monitor department progress</p>
           </div>
@@ -103,7 +119,11 @@ const AdminDashboard = () => {
       {dashboard && (
         <section className="admin-chart-preview">
           <ChartCard title="Category Overview" data={dashboard.categoryWise} />
-          <ChartCard title="Status Overview" data={dashboard.statusWise} type="pie" />
+          <ChartCard
+            title="Status Overview"
+            data={dashboard.statusWise}
+            type="pie"
+          />
         </section>
       )}
     </main>

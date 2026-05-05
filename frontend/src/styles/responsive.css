@@ -123,3 +123,42 @@
     min-height: 500px;
   }
 }
+
+
+
+
+@media (max-width: 1100px) {
+  .admin-filter-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .department-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .department-create-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .admin-filter-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-details-hero {
+    flex-direction: column;
+  }
+
+  .admin-citizen-box {
+    width: 100%;
+  }
+
+  .admin-mini-grid {
+    grid-template-columns: 1fr;
+  }
+}

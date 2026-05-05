@@ -1,0 +1,283 @@
+.admin-panel-page {
+  min-height: calc(100vh - 140px);
+  padding: 52px 6%;
+}
+
+.admin-panel-header {
+  margin-bottom: 26px;
+}
+
+.admin-panel-header span {
+  color: #2563eb;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+.admin-panel-header h1 {
+  font-size: clamp(34px, 5vw, 58px);
+  color: #0f172a;
+  margin: 8px 0;
+}
+
+.admin-panel-header p {
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.admin-filter-bar {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) 180px 180px 180px auto;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.admin-filter-bar select,
+.admin-filter-bar input,
+.admin-table select,
+.admin-table input,
+.admin-update-form input,
+.admin-update-form select,
+.admin-update-form textarea,
+.department-create-form input,
+.department-edit-card input {
+  width: 100%;
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  padding: 13px 14px;
+  border-radius: 14px;
+  outline: none;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.admin-table-card,
+.admin-card,
+.admin-details-hero {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  border-radius: 28px;
+}
+
+.admin-table-card,
+.admin-card {
+  padding: 22px;
+}
+
+.table-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.table-title h2,
+.admin-card h2 {
+  color: #0f172a;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 1000px;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table th {
+  color: #334155;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.admin-table td {
+  color: #475569;
+  font-weight: 800;
+}
+
+.table-action-link,
+.table-save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-details-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 26px;
+  margin-bottom: 22px;
+}
+
+.admin-details-hero h1 {
+  font-size: clamp(30px, 4vw, 48px);
+  color: #0f172a;
+  margin: 10px 0 14px;
+}
+
+.admin-citizen-box {
+  min-width: 260px;
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+  border-radius: 20px;
+  background: #f8fafc;
+  color: #475569;
+}
+
+.admin-citizen-box strong {
+  color: #0f172a;
+}
+
+.admin-details-layout {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.admin-details-main {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-card p {
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.admin-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.admin-mini-grid div {
+  padding: 16px;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.admin-mini-grid strong {
+  display: block;
+  color: #0f172a;
+  font-size: 22px;
+}
+
+.admin-mini-grid span {
+  color: #64748b;
+  font-weight: 900;
+}
+
+.admin-update-form,
+.department-create-form {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-update-form label,
+.department-edit-card label {
+  display: grid;
+  gap: 8px;
+  color: #334155;
+  font-weight: 900;
+}
+
+.admin-update-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.department-create-form {
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 16px;
+}
+
+.department-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.department-edit-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 22px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+/* Dark mode */
+[data-theme="dark"] .admin-panel-header h1,
+[data-theme="dark"] .table-title h2,
+[data-theme="dark"] .admin-card h2,
+[data-theme="dark"] .admin-details-hero h1,
+[data-theme="dark"] .admin-mini-grid strong,
+[data-theme="dark"] .admin-citizen-box strong,
+[data-theme="dark"] .admin-update-form label,
+[data-theme="dark"] .department-edit-card label {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .admin-panel-header p,
+[data-theme="dark"] .admin-table td,
+[data-theme="dark"] .admin-card p,
+[data-theme="dark"] .admin-mini-grid span,
+[data-theme="dark"] .admin-citizen-box {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .admin-table-card,
+[data-theme="dark"] .admin-card,
+[data-theme="dark"] .admin-details-hero {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border-color: rgba(148, 163, 184, 0.32) !important;
+}
+
+[data-theme="dark"] .admin-filter-bar select,
+[data-theme="dark"] .admin-filter-bar input,
+[data-theme="dark"] .admin-table select,
+[data-theme="dark"] .admin-table input,
+[data-theme="dark"] .admin-update-form input,
+[data-theme="dark"] .admin-update-form select,
+[data-theme="dark"] .admin-update-form textarea,
+[data-theme="dark"] .department-create-form input,
+[data-theme="dark"] .department-edit-card input,
+[data-theme="dark"] .department-edit-card,
+[data-theme="dark"] .admin-mini-grid div,
+[data-theme="dark"] .admin-citizen-box {
+  background: #111827 !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .admin-table th,
+[data-theme="dark"] .admin-table td {
+  border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .admin-table th {
+  color: #e5e7eb !important;
+}

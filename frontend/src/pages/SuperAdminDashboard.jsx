@@ -1,4 +1,5 @@
-import { Activity, Building2, Settings, Shield, Users } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Activity, BarChart3, Building2, Settings, Shield, Users } from "lucide-react";
 import DashboardStats from "../components/DashboardStats";
 import useAuth from "../hooks/useAuth";
 
@@ -9,7 +10,7 @@ const SuperAdminDashboard = () => {
     { label: "Admins", value: "Manage", icon: <Users /> },
     { label: "Departments", value: "10", icon: <Building2 /> },
     { label: "System", value: "Control", icon: <Settings /> },
-    { label: "Logs", value: "Audit", icon: <Activity /> },
+    { label: "Analytics", value: "Live", icon: <BarChart3 /> },
   ];
 
   return (
@@ -18,7 +19,7 @@ const SuperAdminDashboard = () => {
         <div>
           <span>Super Admin Dashboard</span>
           <h1>System Control, {user?.name}</h1>
-          <p>Manage admins, officers, departments, settings, and reports.</p>
+          <p>Manage users, departments, complaints, analytics, and system rules.</p>
         </div>
       </section>
 
@@ -27,13 +28,14 @@ const SuperAdminDashboard = () => {
       <section className="dashboard-grid">
         <div className="dashboard-card big-card">
           <h2>Super Admin Controls</h2>
+
           <div className="feature-list">
-            <p>Manage admins</p>
-            <p>Manage departments</p>
-            <p>Manage department officers</p>
-            <p>Set escalation rules</p>
-            <p>View activity logs</p>
-            <p>Generate reports</p>
+            <Link to="/super-admin/users">Manage users and roles</Link>
+            <Link to="/super-admin/departments">Manage departments</Link>
+            <Link to="/admin/complaints">Manage all complaints</Link>
+            <Link to="/analytics">View analytics</Link>
+            <Link to="/map">View public heatmap</Link>
+            <p>System settings and escalation rules coming next.</p>
           </div>
         </div>
 
@@ -41,12 +43,14 @@ const SuperAdminDashboard = () => {
           <Shield size={32} />
           <h3>High-Level Escalations</h3>
           <p>Review unresolved and critical complaints.</p>
+          <Link to="/admin/complaints">Open complaints</Link>
         </div>
 
         <div className="dashboard-card">
-          <Settings size={32} />
-          <h3>System Settings</h3>
-          <p>Control category-department mapping and rules.</p>
+          <Activity size={32} />
+          <h3>System Monitoring</h3>
+          <p>Monitor users, departments, reports and duplicate activity.</p>
+          <Link to="/analytics">Open analytics</Link>
         </div>
       </section>
     </main>
