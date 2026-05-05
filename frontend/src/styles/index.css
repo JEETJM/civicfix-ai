@@ -686,3 +686,345 @@ select {
 [data-theme="dark"] .duplicate-reason {
   color: #fed7aa;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================= */
+/* FINAL DARK MODE FIXES */
+/* ============================= */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+[data-theme="dark"] body {
+  background: #020617;
+  color: #f8fafc;
+}
+
+/* All headings/text visibility */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] label,
+[data-theme="dark"] strong,
+[data-theme="dark"] .hero-metrics strong,
+[data-theme="dark"] .hero-metrics span,
+[data-theme="dark"] .dashboard-stat-card strong,
+[data-theme="dark"] .dashboard-stat-card span,
+[data-theme="dark"] .complaint-header h1,
+[data-theme="dark"] .complaint-header span,
+[data-theme="dark"] .auth-form label,
+[data-theme="dark"] .complaint-form label {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] small,
+[data-theme="dark"] .hero-content p,
+[data-theme="dark"] .complaint-header p,
+[data-theme="dark"] .section-heading p,
+[data-theme="dark"] .auth-brand p,
+[data-theme="dark"] .dashboard-header p {
+  color: #cbd5e1;
+}
+
+/* Cards */
+[data-theme="dark"] .hero-metrics div,
+[data-theme="dark"] .hero-panel,
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .dashboard-card,
+[data-theme="dark"] .dashboard-stat-card,
+[data-theme="dark"] .auth-card,
+[data-theme="dark"] .simple-card,
+[data-theme="dark"] .complaint-form-card,
+[data-theme="dark"] .priority-score-card,
+[data-theme="dark"] .ai-placeholder,
+[data-theme="dark"] .complaint-card,
+[data-theme="dark"] .details-card,
+[data-theme="dark"] .details-hero,
+[data-theme="dark"] .empty-state {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border-color: rgba(148, 163, 184, 0.32) !important;
+  color: #f8fafc !important;
+}
+
+/* Inputs, textarea, select */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .auth-form input,
+[data-theme="dark"] .auth-form select,
+[data-theme="dark"] .complaint-form input,
+[data-theme="dark"] .complaint-form textarea,
+[data-theme="dark"] .complaint-form select,
+[data-theme="dark"] .complaint-toolbar input,
+[data-theme="dark"] .complaint-toolbar select,
+[data-theme="dark"] .input-with-icon {
+  background: #111827 !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* Placeholder */
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1;
+}
+
+/* Select dropdown options */
+[data-theme="dark"] select option {
+  background: #111827 !important;
+  color: #f8fafc !important;
+}
+
+/* Browser dropdown focus */
+[data-theme="dark"] select:focus,
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18) !important;
+}
+
+/* Input with icon */
+[data-theme="dark"] .input-with-icon input {
+  background: transparent !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .input-with-icon svg {
+  color: #60a5fa !important;
+}
+
+/* File upload */
+[data-theme="dark"] .file-upload-box {
+  background: #172554 !important;
+  border-color: #3b82f6 !important;
+  color: #dbeafe !important;
+}
+
+[data-theme="dark"] .file-upload-box span,
+[data-theme="dark"] .file-upload-box svg {
+  color: #dbeafe !important;
+}
+
+/* Buttons */
+[data-theme="dark"] .secondary-btn,
+[data-theme="dark"] .secondary-action-btn,
+[data-theme="dark"] .nav-login,
+[data-theme="dark"] .theme-toggle {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+[data-theme="dark"] .primary-btn,
+[data-theme="dark"] .auth-submit,
+[data-theme="dark"] .nav-register,
+[data-theme="dark"] .nav-logout {
+  color: #ffffff !important;
+}
+
+/* Hero metrics fix */
+[data-theme="dark"] .hero-metrics div {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border: 1px solid #334155 !important;
+}
+
+[data-theme="dark"] .hero-metrics strong {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .hero-metrics span {
+  color: #cbd5e1 !important;
+}
+
+/* My complaints search box fix */
+[data-theme="dark"] .search-box {
+  background: #111827 !important;
+  border-color: #334155 !important;
+}
+
+[data-theme="dark"] .search-box input {
+  background: transparent !important;
+  color: #f8fafc !important;
+}
+
+/* Toolbar select */
+[data-theme="dark"] .complaint-toolbar select {
+  background: #111827 !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* AI placeholder */
+[data-theme="dark"] .ai-placeholder h3 {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .ai-placeholder p {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .ai-placeholder svg {
+  color: #60a5fa !important;
+}
+
+/* Info note dark */
+[data-theme="dark"] .info-note {
+  background: rgba(120, 53, 15, 0.35) !important;
+  border-color: rgba(245, 158, 11, 0.38) !important;
+  color: #fde68a !important;
+}
+
+[data-theme="dark"] .info-note p,
+[data-theme="dark"] .info-note svg {
+  color: #fde68a !important;
+}
+
+/* Dropdown forced visible */
+[data-theme="dark"] select,
+[data-theme="dark"] option {
+  color: #f8fafc !important;
+  background-color: #111827 !important;
+}
+
+/* White textarea issue fix */
+[data-theme="dark"] textarea {
+  background-color: #111827 !important;
+  color: #f8fafc !important;
+  caret-color: #60a5fa;
+}
+
+/* Navbar dark visibility */
+[data-theme="dark"] .navbar {
+  background: rgba(2, 6, 23, 0.92) !important;
+}
+
+[data-theme="dark"] .nav-links a {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .nav-links a.active,
+[data-theme="dark"] .nav-links a:hover {
+  color: #60a5fa !important;
+}
+
+/* Complaint meta boxes */
+[data-theme="dark"] .complaint-meta-grid div,
+[data-theme="dark"] .timeline-content,
+[data-theme="dark"] .priority-reason,
+[data-theme="dark"] .no-image-box,
+[data-theme="dark"] .feature-list p,
+[data-theme="dark"] .quick-actions a {
+  background: #111827 !important;
+  color: #cbd5e1 !important;
+  border-color: #334155 !important;
+}
+
+/* Image preview */
+[data-theme="dark"] .image-preview-box {
+  background: #111827 !important;
+  border-color: #334155 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ============================= */
+/* FINAL BADGE DARK MODE FIX */
+/* ============================= */
+
+[data-theme="dark"] .status-badge,
+[data-theme="dark"] .urgency-badge,
+[data-theme="dark"] .complaint-id,
+[data-theme="dark"] .category-pill {
+  color: inherit !important;
+}
+
+/* Status badges */
+[data-theme="dark"] .status-submitted,
+[data-theme="dark"] .status-ai-analyzed,
+[data-theme="dark"] .status-duplicate-checked {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
+
+[data-theme="dark"] .status-assigned-to-department,
+[data-theme="dark"] .status-in-progress {
+  background: #ffedd5 !important;
+  color: #c2410c !important;
+}
+
+[data-theme="dark"] .status-resolved,
+[data-theme="dark"] .status-citizen-verified,
+[data-theme="dark"] .status-closed {
+  background: #d1fae5 !important;
+  color: #047857 !important;
+}
+
+[data-theme="dark"] .status-escalated,
+[data-theme="dark"] .status-rejected {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+/* Urgency badges */
+[data-theme="dark"] .urgency-low {
+  background: #d1fae5 !important;
+  color: #047857 !important;
+}
+
+[data-theme="dark"] .urgency-medium {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
+
+[data-theme="dark"] .urgency-high {
+  background: #ffedd5 !important;
+  color: #c2410c !important;
+}
+
+[data-theme="dark"] .urgency-critical {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+/* Complaint ID badge */
+[data-theme="dark"] .complaint-id {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
+
+/* Category pill */
+[data-theme="dark"] .category-pill {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
