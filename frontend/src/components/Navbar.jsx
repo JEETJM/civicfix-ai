@@ -1,21 +1,26 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   Building2,
+  Crown,
   LayoutDashboard,
   LogOut,
   MapPinned,
   Menu,
+  Moon,
   ShieldCheck,
+  Sun,
   UserCircle,
   X,
 } from "lucide-react";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
+import { useTheme } from "../context/ThemeContext";
 import { getDashboardPathByRole, roleLabels } from "../utils/rolePermissions";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -56,6 +61,11 @@ const Navbar = () => {
           About
         </NavLink>
 
+        <button className="theme-toggle" onClick={toggleTheme} type="button">
+          {isDark ? <Sun size={17} /> : <Moon size={17} />}
+          {isDark ? "Light" : "Dark"}
+        </button>
+
         {isAuthenticated ? (
           <>
             <NavLink to={dashboardPath} onClick={() => setOpen(false)}>
@@ -77,8 +87,27 @@ const Navbar = () => {
         ) : (
           <div className="nav-auth">
             <Link to="/login" className="nav-login" onClick={() => setOpen(false)}>
-              Login
+              Citizen Login
             </Link>
+
+            <Link
+              to="/admin-login"
+              className="nav-admin-login"
+              onClick={() => setOpen(false)}
+            >
+              <Building2 size={16} />
+              Admin
+            </Link>
+
+            <Link
+              to="/super-admin-login"
+              className="nav-super-login"
+              onClick={() => setOpen(false)}
+            >
+              <Crown size={16} />
+              Super Admin
+            </Link>
+
             <Link
               to="/register"
               className="nav-register"

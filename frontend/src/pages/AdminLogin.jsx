@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LogIn, ShieldCheck } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Building2, LogIn } from "lucide-react";
 import useAuth from "../hooks/useAuth";
-import { getDashboardPathByRole } from "../utils/rolePermissions";
+import { USER_ROLES } from "../utils/rolePermissions";
 
-const Login = () => {
-  const { login } = useAuth();
+const AdminLogin = () => {
+  const { login, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -31,12 +30,16 @@ const Login = () => {
 
     try {
       const data = await login(formData);
-      const redirectPath =
-        location.state?.from?.pathname || getDashboardPathByRole(data.user.role);
 
-      navigate(redirectPath, { replace: true });
+      if (data.user.role !== USER_ROLES.ADMIN) {
+        await logout();
+        setError("This login page is only for Admin accounts.");
+        return;
+      }
+
+      navigate("/admin-dashboard", { replace: true });
     } catch (err) {
-      setError(err.message || "Login failed");
+      setError(err.message || "Admin login failed");
     } finally {
       setLoading(false);
     }
@@ -46,20 +49,20 @@ const Login = () => {
     <main className="auth-page">
       <section className="auth-card">
         <div className="auth-brand">
-          <ShieldCheck size={36} />
-          <h1>Welcome Back</h1>
-          <p>Login to manage and track civic complaints.</p>
+          <Building2 size={38} />
+          <h1>Admin Login</h1>
+          <p>Login to manage complaints, departments, and analytics.</p>
         </div>
 
         {error && <div className="form-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <label>
-            Email Address
+            Admin Email
             <input
               type="email"
               name="email"
-              placeholder="Enter Your Email"
+              placeholder="Enter admin email"
               value={formData.email}
               onChange={handleChange}
               required
@@ -71,7 +74,7 @@ const Login = () => {
             <input
               type="password"
               name="password"
-              placeholder="Enter Your  password"
+              placeholder="Enter password"
               value={formData.password}
               onChange={handleChange}
               required
@@ -80,24 +83,16 @@ const Login = () => {
 
           <button className="auth-submit" disabled={loading}>
             <LogIn size={18} />
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Logging in..." : "Login as Admin"}
           </button>
         </form>
 
         <p className="auth-switch">
-          New to CivicFix AI? <Link to="/register">Create account</Link>
+          Citizen? <Link to="/login">Citizen Login</Link>
         </p>
-
-        {/* <div className="demo-box">
-          <strong>Demo users</strong>
-          <span>citizen@test.com / 123456</span>
-          <span>admin@test.com / 123456</span>
-          <span>road@test.com / 123456</span>
-          <span>superadmin@test.com / 123456</span>
-        </div> */}
       </section>
     </main>
   );
 };
 
-export default Login;
+export default AdminLogin;

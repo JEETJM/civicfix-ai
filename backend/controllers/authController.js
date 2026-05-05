@@ -38,14 +38,6 @@ const registerUser = async (req, res, next) => {
       throw new Error("User already exists with this email.");
     }
 
-    let finalRole = USER_ROLES.CITIZEN;
-
-    // Hackathon/demo purpose: allow role from body.
-    // In real production, public register should only create citizen accounts.
-    if (role && ALL_ROLES.includes(role)) {
-      finalRole = role;
-    }
-
     const user = await User.create({
       name,
       email,

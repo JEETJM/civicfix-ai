@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LogIn, ShieldCheck } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Crown, LogIn } from "lucide-react";
 import useAuth from "../hooks/useAuth";
-import { getDashboardPathByRole } from "../utils/rolePermissions";
+import { USER_ROLES } from "../utils/rolePermissions";
 
-const Login = () => {
-  const { login } = useAuth();
+const SuperAdminLogin = () => {
+  const { login, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -31,12 +30,16 @@ const Login = () => {
 
     try {
       const data = await login(formData);
-      const redirectPath =
-        location.state?.from?.pathname || getDashboardPathByRole(data.user.role);
 
-      navigate(redirectPath, { replace: true });
+      if (data.user.role !== USER_ROLES.SUPER_ADMIN) {
+        await logout();
+        setError("This login page is only for Super Admin account.");
+        return;
+      }
+
+      navigate("/super-admin-dashboard", { replace: true });
     } catch (err) {
-      setError(err.message || "Login failed");
+      setError(err.message || "Super Admin login failed");
     } finally {
       setLoading(false);
     }
@@ -44,22 +47,22 @@ const Login = () => {
 
   return (
     <main className="auth-page">
-      <section className="auth-card">
+      <section className="auth-card super-admin-card">
         <div className="auth-brand">
-          <ShieldCheck size={36} />
-          <h1>Welcome Back</h1>
-          <p>Login to manage and track civic complaints.</p>
+          <Crown size={38} />
+          <h1>Super Admin Login</h1>
+          <p>Restricted system control access for the project owner.</p>
         </div>
 
         {error && <div className="form-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <label>
-            Email Address
+            Super Admin Email
             <input
               type="email"
               name="email"
-              placeholder="Enter Your Email"
+              placeholder="Enter super admin email"
               value={formData.email}
               onChange={handleChange}
               required
@@ -71,33 +74,25 @@ const Login = () => {
             <input
               type="password"
               name="password"
-              placeholder="Enter Your  password"
+              placeholder="Enter password"
               value={formData.password}
               onChange={handleChange}
               required
             />
           </label>
 
-          <button className="auth-submit" disabled={loading}>
+          <button className="auth-submit super-admin-btn" disabled={loading}>
             <LogIn size={18} />
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Logging in..." : "Login as Super Admin"}
           </button>
         </form>
 
         <p className="auth-switch">
-          New to CivicFix AI? <Link to="/register">Create account</Link>
+          Admin? <Link to="/admin-login">Admin Login</Link>
         </p>
-
-        {/* <div className="demo-box">
-          <strong>Demo users</strong>
-          <span>citizen@test.com / 123456</span>
-          <span>admin@test.com / 123456</span>
-          <span>road@test.com / 123456</span>
-          <span>superadmin@test.com / 123456</span>
-        </div> */}
       </section>
     </main>
   );
 };
 
-export default Login;
+export default SuperAdminLogin;

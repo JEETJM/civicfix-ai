@@ -19,6 +19,8 @@ import ReportIssue from "./pages/ReportIssue";
 import MyComplaints from "./pages/MyComplaints";
 import TrackComplaint from "./pages/TrackComplaint";
 import NotFound from "./pages/NotFound";
+import AdminLogin from "./pages/AdminLogin";
+import SuperAdminLogin from "./pages/SuperAdminLogin";
 
 import { USER_ROLES } from "./utils/rolePermissions";
 
@@ -33,6 +35,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/map" element={<MapView />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/super-admin-login" element={<SuperAdminLogin />} />
         <Route path="/register" element={<Register />} />
 
         <Route

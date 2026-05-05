@@ -49,7 +49,7 @@ const Register = () => {
         <div className="auth-brand">
           <ShieldCheck size={36} />
           <h1>Create Account</h1>
-          <p>Join CivicFix AI and start reporting smarter.</p>
+          <p>Register as a citizen or department officer.</p>
         </div>
 
         {error && <div className="form-error">{error}</div>}
@@ -103,12 +103,10 @@ const Register = () => {
           </label>
 
           <label>
-            Role
+            Account Type
             <select name="role" value={formData.role} onChange={handleChange}>
               <option value="citizen">Citizen</option>
               <option value="department_officer">Department Officer</option>
-              <option value="admin">Admin</option>
-              <option value="super_admin">Super Admin</option>
             </select>
           </label>
 
@@ -141,7 +139,12 @@ const Register = () => {
         </form>
 
         <p className="auth-switch">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account? <Link to="/login">Citizen Login</Link>
+        </p>
+
+        <p className="auth-switch small-auth-links">
+          Admin? <Link to="/admin-login">Admin Login</Link> · Super Admin?{" "}
+          <Link to="/super-admin-login">Super Admin Login</Link>
         </p>
       </section>
     </main>
