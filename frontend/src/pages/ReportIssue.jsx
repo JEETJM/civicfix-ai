@@ -7,10 +7,13 @@ import {
   ImagePlus,
   LocateFixed,
   MapPin,
+  UploadCloud,
+  X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { analyzeComplaint } from "../services/aiService";
 import { createComplaint } from "../services/complaintService";
+import { uploadComplaintImage } from "../services/uploadService";
 import PriorityScoreCard from "../components/PriorityScoreCard";
 import DuplicateAlertBox from "../components/DuplicateAlertBox";
 
@@ -43,6 +46,8 @@ const ReportIssue = () => {
     lng: "",
   });
 
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState("");
   const [analysis, setAnalysis] = useState(null);
   const [duplicate, setDuplicate] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
@@ -53,6 +58,41 @@ const ReportIssue = () => {
     setFormData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Only JPG, PNG, and WEBP images are allowed");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be less than 5MB");
+      return;
+    }
+
+    setSelectedImage(file);
+    setPreviewImage(URL.createObjectURL(file));
+
+    setFormData((prev) => ({
+      ...prev,
+      imageUrl: "",
+    }));
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setPreviewImage("");
+    setFormData((prev) => ({
+      ...prev,
+      imageUrl: "",
     }));
   };
 
@@ -141,11 +181,20 @@ const ReportIssue = () => {
     setDuplicate(null);
 
     try {
+      let finalImageUrl = formData.imageUrl;
+
+      if (selectedImage) {
+        toast.loading("Uploading image...", { id: "image-upload" });
+        const uploadData = await uploadComplaintImage(selectedImage);
+        finalImageUrl = uploadData.imageUrl;
+        toast.success("Image uploaded", { id: "image-upload" });
+      }
+
       const payload = {
         title: formData.title,
         description: formData.description,
         category: formData.category,
-        imageUrl: formData.imageUrl,
+        imageUrl: finalImageUrl,
         location: {
           address: formData.address,
           city: formData.city,
@@ -233,19 +282,49 @@ const ReportIssue = () => {
               </select>
             </label>
 
-            <label>
-              Image URL
-              <div className="input-with-icon">
-                <ImagePlus size={18} />
-                <input
-                  type="url"
-                  name="imageUrl"
-                  placeholder="Paste image URL or leave blank"
-                  value={formData.imageUrl}
-                  onChange={handleChange}
+            <div className="image-upload-section">
+              <label>
+                Upload Issue Image
+                <div className="file-upload-box">
+                  <UploadCloud size={20} />
+                  <span>
+                    {selectedImage ? selectedImage.name : "Choose image from device"}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    onChange={handleImageChange}
+                  />
+                </div>
+              </label>
+
+              <label>
+                Or Paste Image URL
+                <div className="input-with-icon">
+                  <ImagePlus size={18} />
+                  <input
+                    type="url"
+                    name="imageUrl"
+                    placeholder="Paste image URL"
+                    value={formData.imageUrl}
+                    onChange={handleChange}
+                    disabled={Boolean(selectedImage)}
+                  />
+                </div>
+              </label>
+            </div>
+
+            {(previewImage || formData.imageUrl) && (
+              <div className="image-preview-box full-field">
+                <button type="button" onClick={removeImage}>
+                  <X size={18} />
+                </button>
+                <img
+                  src={previewImage || formData.imageUrl}
+                  alt="Complaint preview"
                 />
               </div>
-            </label>
+            )}
 
             <label className="full-field">
               Address
@@ -356,8 +435,8 @@ const ReportIssue = () => {
           <div className="info-note">
             <AlertTriangle size={18} />
             <p>
-              For demo, image upload is URL based. Cloudinary real upload will
-              be connected later with proof upload phase.
+              You can upload an issue photo from your device or paste an image
+              URL. Uploaded images are stored using Cloudinary.
             </p>
           </div>
         </aside>

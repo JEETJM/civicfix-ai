@@ -18,6 +18,7 @@ const priorityRoutes = require("./routes/priorityRoutes");
 const duplicateRoutes = require("./routes/duplicateRoutes");
 const heatmapRoutes = require("./routes/heatmapRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
 const app = express();
 
 connectDB();
@@ -49,7 +50,7 @@ app.use("/api/priority", priorityRoutes);
 app.use("/api/duplicates", duplicateRoutes);
 app.use("/api/heatmap", heatmapRoutes);
 app.use("/api/analytics", analyticsRoutes);
-
+app.use("/api/upload", uploadRoutes);
 /* Local backend test route only */
 if (env.NODE_ENV !== "production") {
   app.get("/", (req, res) => {
