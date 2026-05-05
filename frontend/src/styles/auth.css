@@ -136,3 +136,159 @@
 .demo-box strong {
   color: #0f172a;
 }
+
+/* ================================ */
+/* REGISTER PROFILE IMAGE UPLOAD */
+/* ================================ */
+
+.register-profile-upload {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 18px 0 22px;
+  padding: 16px;
+  border-radius: 22px;
+  background: #f8fafc;
+  border: 1px solid #dbe3ef;
+}
+
+.register-avatar-wrap {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  flex-shrink: 0;
+}
+
+.register-avatar-img,
+.register-avatar-letter {
+  width: 92px;
+  height: 92px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  object-fit: cover;
+  border: 4px solid #dbeafe;
+}
+
+.register-avatar-letter {
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  color: #ffffff;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.register-camera-btn {
+  position: absolute;
+  right: -3px;
+  bottom: 3px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.28);
+}
+
+.register-camera-btn input,
+.mini-upload-btn input {
+  display: none;
+}
+
+.register-upload-info {
+  flex: 1;
+}
+
+.register-upload-info strong {
+  display: block;
+  color: #0f172a;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.register-upload-info p {
+  color: #64748b;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.register-upload-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mini-upload-btn,
+.mini-remove-btn {
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 13px;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.mini-upload-btn {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.mini-remove-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+[data-theme="dark"] .register-profile-upload {
+  background: #111827 !important;
+  border-color: #334155 !important;
+}
+
+[data-theme="dark"] .register-upload-info strong {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .register-upload-info p {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .mini-upload-btn {
+  background: #172554 !important;
+  color: #dbeafe !important;
+}
+
+[data-theme="dark"] .mini-remove-btn {
+  background: #450a0a !important;
+  color: #fecaca !important;
+}
+
+@media (max-width: 720px) {
+  .register-profile-upload {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .register-upload-actions {
+    justify-content: center;
+  }
+}
+
+.admin-approval-note {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+[data-theme="dark"] .admin-approval-note {
+  background: #1c1917 !important;
+  color: #fed7aa !important;
+  border-color: #9a3412 !important;
+}

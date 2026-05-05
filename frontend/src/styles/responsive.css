@@ -162,3 +162,41 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 1100px) {
+  .department-filter-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .department-details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .department-info-grid,
+  .proof-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .department-filter-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .department-details-hero {
+    flex-direction: column;
+  }
+
+  .department-score-box {
+    width: 100%;
+  }
+}

@@ -36,7 +36,17 @@ const getAllUsersForSuperAdmin = async (req, res, next) => {
 
 const updateUserBySuperAdmin = async (req, res, next) => {
   try {
-    const { role, isActive, trustScore, name, phone, city, address } = req.body;
+    const {
+      role,
+      isActive,
+      trustScore,
+      name,
+      phone,
+      city,
+      address,
+      approvalStatus,
+      isApproved,
+    } = req.body;
 
     const user = await User.findById(req.params.id);
 
@@ -45,20 +55,64 @@ const updateUserBySuperAdmin = async (req, res, next) => {
       throw new Error("User not found.");
     }
 
-    if (role) user.role = role;
-    if (isActive !== undefined) user.isActive = isActive;
-    if (trustScore !== undefined && trustScore !== "") user.trustScore = Number(trustScore);
+    if (role) {
+      user.role = role;
+
+      if (role !== "admin") {
+        user.isApproved = true;
+        user.approvalStatus = "Approved";
+      }
+
+      if (role === "admin" && !user.approvalStatus) {
+        user.isApproved = false;
+        user.approvalStatus = "Pending";
+      }
+    }
+
+    if (isActive !== undefined) {
+      user.isActive = isActive;
+    }
+
+    if (trustScore !== undefined && trustScore !== "") {
+      user.trustScore = Number(trustScore);
+    }
+
     if (name !== undefined) user.name = name;
     if (phone !== undefined) user.phone = phone;
     if (city !== undefined) user.city = city;
     if (address !== undefined) user.address = address;
+
+    // ✅ Admin approval logic
+    if (approvalStatus) {
+      user.approvalStatus = approvalStatus;
+
+      if (approvalStatus === "Approved") {
+        user.isApproved = true;
+        user.approvedBy = req.user._id;
+        user.approvedAt = new Date();
+        user.isActive = true;
+      }
+
+      if (approvalStatus === "Rejected") {
+        user.isApproved = false;
+        user.isActive = false;
+      }
+
+      if (approvalStatus === "Pending") {
+        user.isApproved = false;
+      }
+    }
+
+    if (isApproved !== undefined) {
+      user.isApproved = isApproved;
+    }
 
     await user.save();
 
     return res.status(200).json({
       success: true,
       message: "User updated successfully.",
-      user: user.getPublicProfile ? user.getPublicProfile() : user,
+      user: user.getPublicProfile(),
     });
   } catch (error) {
     next(error);
@@ -81,14 +135,7 @@ const getDepartmentManagement = async (req, res, next) => {
 
 const createDepartmentBySuperAdmin = async (req, res, next) => {
   try {
-    const {
-      name,
-      category,
-      officerName,
-      email,
-      phone,
-      description,
-    } = req.body;
+    const { name, category, officerName, email, phone, description } = req.body;
 
     if (!name || !category) {
       res.status(400);
@@ -111,6 +158,7 @@ const createDepartmentBySuperAdmin = async (req, res, next) => {
       description,
       activeComplaints: 0,
       resolvedComplaints: 0,
+      isActive: true,
     });
 
     return res.status(201).json({
@@ -165,6 +213,7 @@ const getSuperAdminStats = async (req, res, next) => {
     const [
       totalUsers,
       totalAdmins,
+      pendingAdmins,
       totalOfficers,
       totalCitizens,
       totalDepartments,
@@ -175,6 +224,7 @@ const getSuperAdminStats = async (req, res, next) => {
     ] = await Promise.all([
       User.countDocuments(),
       User.countDocuments({ role: "admin" }),
+      User.countDocuments({ role: "admin", approvalStatus: "Pending" }),
       User.countDocuments({ role: "department_officer" }),
       User.countDocuments({ role: "citizen" }),
       Department.countDocuments(),
@@ -189,6 +239,7 @@ const getSuperAdminStats = async (req, res, next) => {
       stats: {
         totalUsers,
         totalAdmins,
+        pendingAdmins,
         totalOfficers,
         totalCitizens,
         totalDepartments,

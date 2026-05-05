@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   BarChart3,
+  CheckCircle2,
   GitMerge,
   ListChecks,
   MapPinned,
+  Repeat2,
+  ShieldAlert,
   ShieldCheck,
+  UserCheck,
   Users,
 } from "lucide-react";
 
@@ -65,6 +69,49 @@ const AdminDashboard = () => {
     },
   ];
 
+  const adminActions = [
+    {
+      title: "View & manage all complaints",
+      icon: <ListChecks size={18} />,
+      path: "/admin/complaints",
+    },
+    {
+      title: "Verify complaints",
+      icon: <UserCheck size={18} />,
+      path: "/admin/complaints",
+    },
+    {
+      title: "Assign or reassign department",
+      icon: <Repeat2 size={18} />,
+      path: "/admin/complaints",
+    },
+    {
+      title: "Monitor department progress",
+      icon: <CheckCircle2 size={18} />,
+      path: "/admin/complaints",
+    },
+    {
+      title: "View analytics dashboard",
+      icon: <BarChart3 size={18} />,
+      path: "/analytics",
+    },
+    {
+      title: "View public heatmap",
+      icon: <MapPinned size={18} />,
+      path: "/map",
+    },
+    {
+      title: "Escalation center",
+      icon: <ShieldAlert size={18} />,
+      path: "/escalations",
+    },
+    {
+      title: "Citizen feedback",
+      icon: <Users size={18} />,
+      path: "/feedback",
+    },
+  ];
+
   return (
     <main className="dashboard-page">
       <section className="dashboard-header">
@@ -90,21 +137,13 @@ const AdminDashboard = () => {
           <ShieldCheck size={32} />
           <h2>Admin Controls</h2>
 
-          <div className="feature-list">
-            <p>
-              <Link to="/admin/complaints">View & manage all complaints</Link>
-            </p>
-            <p>
-              {" "}
-              <Link to="/analytics">View analytics dashboard</Link>
-            </p>
-            <p>
-              {" "}
-              <Link to="/map">View public heatmap</Link>
-            </p>
-            <p>Verify complaints</p>
-            <p>Assign or reassign department</p>
-            <p>Monitor department progress</p>
+          <div className="feature-list action-feature-list">
+            {adminActions.map((action) => (
+              <Link to={action.path} key={action.title}>
+                {action.icon}
+                {action.title}
+              </Link>
+            ))}
           </div>
         </div>
 
@@ -112,14 +151,20 @@ const AdminDashboard = () => {
           <MapPinned size={32} />
           <h3>Heatmap & Zones</h3>
           <p>Identify red, yellow, and green civic issue zones.</p>
-          <Link to="/map">Open heatmap</Link>
+
+          <Link to="/map" className="dashboard-action-btn">
+            Open Heatmap
+          </Link>
         </div>
 
         <div className="dashboard-card">
           <BarChart3 size={32} />
           <h3>Analytics</h3>
           <p>Category-wise, status-wise, and department-wise analytics.</p>
-          <Link to="/analytics">Open analytics</Link>
+
+          <Link to="/analytics" className="dashboard-action-btn">
+            Open Analytics
+          </Link>
         </div>
       </section>
 

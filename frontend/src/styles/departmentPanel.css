@@ -1,0 +1,486 @@
+.department-panel-page {
+  min-height: calc(100vh - 140px);
+  padding: 52px 6%;
+}
+
+.department-panel-header {
+  margin-bottom: 26px;
+}
+
+.department-panel-header span {
+  color: #2563eb;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+.department-panel-header h1 {
+  font-size: clamp(34px, 5vw, 58px);
+  color: #0f172a;
+  margin: 8px 0;
+}
+
+.department-panel-header p {
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.department-filter-bar {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) 220px 200px auto;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.department-filter-bar select,
+.department-update-form select,
+.department-update-form textarea {
+  width: 100%;
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  padding: 13px 14px;
+  border-radius: 14px;
+  outline: none;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.department-table-card,
+.department-card,
+.department-details-hero {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  border-radius: 28px;
+}
+
+.department-table-card,
+.department-card {
+  padding: 22px;
+}
+
+.department-table-wrap {
+  overflow-x: auto;
+}
+
+.department-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+}
+
+.department-table th,
+.department-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.department-table th {
+  color: #334155;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.department-table td {
+  color: #475569;
+  font-weight: 800;
+}
+
+.department-details-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 26px;
+  margin-bottom: 22px;
+}
+
+.department-details-hero h1 {
+  font-size: clamp(30px, 4vw, 48px);
+  color: #0f172a;
+  margin: 10px 0 14px;
+}
+
+.department-score-box {
+  min-width: 170px;
+  padding: 22px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #0f172a, #2563eb);
+  color: white;
+  text-align: center;
+}
+
+.department-score-box small {
+  display: block;
+  opacity: 0.85;
+  font-weight: 800;
+}
+
+.department-score-box strong {
+  font-size: 34px;
+}
+
+.department-details-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.department-main {
+  display: grid;
+  gap: 18px;
+}
+
+.department-card h2,
+.department-card h3 {
+  color: #0f172a;
+  margin-bottom: 14px;
+}
+
+.department-card p {
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.department-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.department-info-grid div {
+  padding: 16px;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.department-info-grid strong {
+  display: block;
+  color: #0f172a;
+  font-size: 18px;
+}
+
+.department-info-grid span {
+  color: #64748b;
+  font-weight: 900;
+}
+
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.proof-box {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 22px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.proof-box img,
+.proof-placeholder {
+  width: 100%;
+  height: 230px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.proof-placeholder {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: white;
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
+}
+
+.proof-upload-btn {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 16px;
+  border-radius: 15px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 900;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.proof-upload-btn input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.department-update-form {
+  display: grid;
+  gap: 14px;
+}
+
+.department-update-form label {
+  display: grid;
+  gap: 8px;
+  color: #334155;
+  font-weight: 900;
+}
+
+.department-update-form textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.resolve-btn {
+  border: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #d1fae5;
+  color: #047857;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.proof-status-box {
+  display: grid;
+  gap: 6px;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.proof-status-box strong {
+  color: #0f172a;
+}
+
+.proof-status-box span {
+  color: #2563eb;
+  font-weight: 900;
+}
+
+/* Dark mode */
+[data-theme="dark"] .department-panel-header h1,
+[data-theme="dark"] .department-details-hero h1,
+[data-theme="dark"] .department-card h2,
+[data-theme="dark"] .department-card h3,
+[data-theme="dark"] .department-info-grid strong,
+[data-theme="dark"] .department-update-form label,
+[data-theme="dark"] .proof-status-box strong {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .department-panel-header p,
+[data-theme="dark"] .department-card p,
+[data-theme="dark"] .department-table td,
+[data-theme="dark"] .department-info-grid span {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .department-table-card,
+[data-theme="dark"] .department-card,
+[data-theme="dark"] .department-details-hero {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border-color: rgba(148, 163, 184, 0.32) !important;
+}
+
+[data-theme="dark"] .department-filter-bar select,
+[data-theme="dark"] .department-update-form select,
+[data-theme="dark"] .department-update-form textarea,
+[data-theme="dark"] .department-info-grid div,
+[data-theme="dark"] .proof-box,
+[data-theme="dark"] .proof-status-box {
+  background: #111827 !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .proof-placeholder {
+  background: #020617 !important;
+  border-color: #334155 !important;
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .department-table th,
+[data-theme="dark"] .department-table td {
+  border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .department-table th {
+  color: #e5e7eb !important;
+}
+
+
+
+.hello{
+    border: 1px solid;
+    border-radius: 20px;
+    text-align: center;
+    padding: 6px;
+    background-color: #062c80;
+    color: white;
+    font-size: large;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===================================== */
+/* FINAL DEPARTMENT PANEL DARK MODE FIX */
+/* ===================================== */
+
+[data-theme="dark"] .department-panel-page {
+  color: #f8fafc;
+}
+
+/* Department cards text */
+[data-theme="dark"] .department-card,
+[data-theme="dark"] .proof-box,
+[data-theme="dark"] .department-details-hero {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .department-card h2,
+[data-theme="dark"] .department-card h3,
+[data-theme="dark"] .proof-box h3,
+[data-theme="dark"] .department-details-hero h1 {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .department-card p,
+[data-theme="dark"] .proof-placeholder p {
+  color: #cbd5e1 !important;
+}
+
+/* Proof upload boxes */
+[data-theme="dark"] .proof-box {
+  background: #111827 !important;
+  border: 1px solid #334155 !important;
+}
+
+[data-theme="dark"] .proof-placeholder {
+  background: #020617 !important;
+  border: 1px dashed #475569 !important;
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .proof-placeholder svg,
+[data-theme="dark"] .proof-placeholder p {
+  color: #cbd5e1 !important;
+}
+
+/* Choose image button fix */
+[data-theme="dark"] .proof-upload-btn {
+  background: linear-gradient(135deg, #2563eb, #06b6d4) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.28);
+}
+
+[data-theme="dark"] .proof-upload-btn svg,
+[data-theme="dark"] .proof-upload-btn span,
+[data-theme="dark"] .proof-upload-btn * {
+  color: #ffffff !important;
+}
+
+/* Upload proof button fix */
+[data-theme="dark"] .proof-box .secondary-action-btn {
+  background: #1e293b !important;
+  color: #ffffff !important;
+  border: 1px solid #475569 !important;
+}
+
+[data-theme="dark"] .proof-box .secondary-action-btn:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  transform: translateY(-1px);
+}
+
+/* Work update panel */
+[data-theme="dark"] .department-update-form select,
+[data-theme="dark"] .department-update-form textarea {
+  background: #020617 !important;
+  color: #f8fafc !important;
+  border: 1px solid #475569 !important;
+}
+
+[data-theme="dark"] .department-update-form select option {
+  background: #020617 !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .department-update-form textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Save status button */
+[data-theme="dark"] .department-update-form .primary-btn {
+  background: linear-gradient(135deg, #2563eb, #06b6d4) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* Mark resolved button */
+[data-theme="dark"] .resolve-btn {
+  background: #064e3b !important;
+  color: #d1fae5 !important;
+  border: 1px solid #10b981 !important;
+}
+
+[data-theme="dark"] .resolve-btn svg {
+  color: #d1fae5 !important;
+}
+
+/* Proof status box */
+[data-theme="dark"] .proof-status-box {
+  background: #020617 !important;
+  border: 1px solid #334155 !important;
+}
+
+[data-theme="dark"] .proof-status-box strong {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .proof-status-box span {
+  color: #60a5fa !important;
+}
+
+/* Prevent selected/highlight-looking text issue */
+[data-theme="dark"] .proof-placeholder,
+[data-theme="dark"] .proof-placeholder p,
+[data-theme="dark"] .proof-upload-btn {
+  user-select: none;
+}
+
+/* If browser selection happened, make it normal */
+[data-theme="dark"] ::selection {
+  background: rgba(37, 99, 235, 0.55);
+  color: #ffffff;
+}

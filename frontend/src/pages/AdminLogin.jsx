@@ -1,22 +1,26 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Building2, LogIn } from "lucide-react";
+import toast from "react-hot-toast";
+
 import useAuth from "../hooks/useAuth";
 import { USER_ROLES } from "../utils/rolePermissions";
 
 const AdminLogin = () => {
-  const { login, logout } = useAuth();
   const navigate = useNavigate();
+  const { login, logout } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
+    setError("");
+
     setFormData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -25,21 +29,28 @@ const AdminLogin = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     setError("");
     setLoading(true);
 
     try {
-      const data = await login(formData);
+      const loggedInUser = await login(formData, { silent: true });
 
-      if (data.user.role !== USER_ROLES.ADMIN) {
-        await logout();
-        setError("This login page is only for Admin accounts.");
+      if (loggedInUser?.role !== USER_ROLES.ADMIN) {
+        await logout({ silent: true });
+
+        const message = "This login page is only for Admin accounts.";
+        setError(message);
+        toast.error(message);
         return;
       }
 
-      navigate("/admin-dashboard", { replace: true });
+      toast.success("Admin login successful");
+      navigate("/admin-dashboard");
     } catch (err) {
-      setError(err.message || "Admin login failed");
+      const message = err.message || "Admin login failed.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -49,14 +60,14 @@ const AdminLogin = () => {
     <main className="auth-page">
       <section className="auth-card">
         <div className="auth-brand">
-          <Building2 size={38} />
+          <Building2 size={42} />
           <h1>Admin Login</h1>
           <p>Login to manage complaints, departments, and analytics.</p>
         </div>
 
-        {error && <div className="form-error">{error}</div>}
+        {error && <div className="auth-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <label>
             Admin Email
             <input
@@ -85,6 +96,9 @@ const AdminLogin = () => {
             <LogIn size={18} />
             {loading ? "Logging in..." : "Login as Admin"}
           </button>
+          <p className="auth-switch">
+            Forgot password? <Link to="/forgot-password">Reset Password</Link>
+          </p>
         </form>
 
         <p className="auth-switch">

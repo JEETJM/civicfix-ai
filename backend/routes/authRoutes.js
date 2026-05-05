@@ -4,8 +4,8 @@ const {
   registerUser,
   loginUser,
   logoutUser,
-  getMyProfile,
-  updateMyProfile,
+  getMe,
+  updateMe,
   changePassword,
 } = require("../controllers/authController");
 
@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/test", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Auth route is working",
+    message: "Auth routes working",
   });
 });
 
@@ -24,8 +24,8 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 
-router.get("/me", protect, getMyProfile);
-router.put("/me", protect, updateMyProfile);
+router.get("/me", protect, getMe);
+router.put("/me", protect, updateMe);
 router.put("/change-password", protect, changePassword);
 
 module.exports = router;

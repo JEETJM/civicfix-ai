@@ -19,10 +19,12 @@ const duplicateRoutes = require("./routes/duplicateRoutes");
 const heatmapRoutes = require("./routes/heatmapRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
-
+const departmentPanelRoutes = require("./routes/departmentPanelRoutes");
 const adminPanelRoutes = require("./routes/adminPanelRoutes");
 const superAdminPanelRoutes = require("./routes/superAdminPanelRoutes");
-
+const feedbackRoutes = require("./routes/feedbackRoutes");
+const escalationRoutes = require("./routes/escalationRoutes");
+const otpRoutes = require("./routes/otpRoutes");
 const app = express();
 
 connectDB();
@@ -48,7 +50,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/complaints", complaintRoutes);
-
+app.use("/api/otp", otpRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/priority", priorityRoutes);
 app.use("/api/duplicates", duplicateRoutes);
@@ -57,6 +59,11 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/admin-panel", adminPanelRoutes);
 app.use("/api/super-admin-panel", superAdminPanelRoutes);
+app.use("/api/department-panel", departmentPanelRoutes);
+app.use("/api/feedback", feedbackRoutes);
+app.use("/api/escalations", escalationRoutes);
+
+
 
 /* Local backend test route only */
 if (env.NODE_ENV !== "production") {

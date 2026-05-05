@@ -105,7 +105,7 @@ const Navbar = () => {
         ) : (
           <div className="nav-auth">
             <Link to="/login" className="nav-login" onClick={() => setOpen(false)}>
-              Citizen Login
+              Citizen & Officer Login
             </Link>
 
             <Link

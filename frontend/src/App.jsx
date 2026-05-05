@@ -28,14 +28,48 @@ import AdminComplaintDetails from "./pages/AdminComplaintDetails";
 import ManageUsers from "./pages/ManageUsers";
 import ManageDepartments from "./pages/ManageDepartments";
 import ProfileSettings from "./pages/ProfileSettings";
+import DepartmentComplaints from "./pages/DepartmentComplaints";
+import DepartmentComplaintDetails from "./pages/DepartmentComplaintDetails";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+// import TrackComplaint from "./pages/TrackComplaint";
+import EscalationCenter from "./pages/EscalationCenter";
+import Feedback from "./pages/Feedback";
 import { USER_ROLES } from "./utils/rolePermissions";
 
 function App() {
   return (
     <div className="app-shell">
-      <Toaster position="top-right" />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 2600,
+          style: {
+            borderRadius: "16px",
+            padding: "14px 16px",
+            fontWeight: "800",
+            boxShadow: "0 18px 45px rgba(15, 23, 42, 0.18)",
+            zIndex: 999999,
+          },
+          success: {
+            iconTheme: {
+              primary: "#22c55e",
+              secondary: "#ffffff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#ef4444",
+              secondary: "#ffffff",
+            },
+            style: {
+              background: "#fff1f2",
+              color: "#991b1b",
+            },
+          },
+        }}
+      />{" "}
       <Navbar />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -55,6 +89,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/track-complaint" element={<TrackComplaint />} />
 
         <Route
           path="/analytics"
@@ -68,6 +105,32 @@ function App() {
                 ]}
               >
                 <Analytics />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/escalations"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute
+                allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN]}
+              >
+                <EscalationCenter />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/feedback"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute
+                allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN]}
+              >
+                <Feedback />
               </RoleBasedRoute>
             </ProtectedRoute>
           }
@@ -154,6 +217,40 @@ function App() {
         />
 
         <Route
+          path="/department/complaints"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute
+                allowedRoles={[
+                  USER_ROLES.DEPARTMENT_OFFICER,
+                  USER_ROLES.ADMIN,
+                  USER_ROLES.SUPER_ADMIN,
+                ]}
+              >
+                <DepartmentComplaints />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/department/complaints/:id"
+          element={
+            <ProtectedRoute>
+              <RoleBasedRoute
+                allowedRoles={[
+                  USER_ROLES.DEPARTMENT_OFFICER,
+                  USER_ROLES.ADMIN,
+                  USER_ROLES.SUPER_ADMIN,
+                ]}
+              >
+                <DepartmentComplaintDetails />
+              </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/report-issue"
           element={
             <ProtectedRoute>
@@ -196,7 +293,6 @@ function App() {
         <Route path="/track-complaint" element={<TrackComplaint />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-
       <Footer />
     </div>
   );

@@ -1,23 +1,26 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LogIn, ShieldCheck } from "lucide-react";
+import toast from "react-hot-toast";
+
 import useAuth from "../hooks/useAuth";
-import { getDashboardPathByRole } from "../utils/rolePermissions";
+import { USER_ROLES, getDashboardPathByRole } from "../utils/rolePermissions";
 
 const Login = () => {
-  const { login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { login, logout } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
+    setError("");
+
     setFormData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -26,17 +29,30 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     setError("");
     setLoading(true);
 
     try {
-      const data = await login(formData);
-      const redirectPath =
-        location.state?.from?.pathname || getDashboardPathByRole(data.user.role);
+      const loggedInUser = await login(formData, { silent: true });
 
-      navigate(redirectPath, { replace: true });
+      const allowedRoles = [USER_ROLES.CITIZEN, USER_ROLES.DEPARTMENT_OFFICER];
+
+      if (!allowedRoles.includes(loggedInUser?.role)) {
+        await logout({ silent: true });
+
+        const message = "Use Admin or Super Admin login for this account.";
+        setError(message);
+        toast.error(message);
+        return;
+      }
+
+      toast.success("Login successful");
+      navigate(getDashboardPathByRole(loggedInUser.role));
     } catch (err) {
-      setError(err.message || "Login failed");
+      const message = err.message || "Login failed. Please check your details.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -46,20 +62,20 @@ const Login = () => {
     <main className="auth-page">
       <section className="auth-card">
         <div className="auth-brand">
-          <ShieldCheck size={36} />
-          <h1>Welcome Back</h1>
-          <p>Login to manage and track civic complaints.</p>
+          <ShieldCheck size={42} />
+          <h1>Citizen & Officer Login</h1>
+          <p>Login as citizen or department officer.</p>
         </div>
 
-        {error && <div className="form-error">{error}</div>}
+        {error && <div className="auth-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <label>
             Email Address
             <input
               type="email"
               name="email"
-              placeholder="Enter Your Email"
+              placeholder="Enter email address"
               value={formData.email}
               onChange={handleChange}
               required
@@ -71,7 +87,7 @@ const Login = () => {
             <input
               type="password"
               name="password"
-              placeholder="Enter Your  password"
+              placeholder="Enter password"
               value={formData.password}
               onChange={handleChange}
               required
@@ -82,19 +98,20 @@ const Login = () => {
             <LogIn size={18} />
             {loading ? "Logging in..." : "Login"}
           </button>
+
+          <p className="auth-switch">
+            Forgot password? <Link to="/forgot-password">Reset Password</Link>
+          </p>
         </form>
 
         <p className="auth-switch">
-          New to CivicFix AI? <Link to="/register">Create account</Link>
+          New citizen? <Link to="/register">Create Account</Link>
         </p>
 
-        {/* <div className="demo-box">
-          <strong>Demo users</strong>
-          <span>citizen@test.com / 123456</span>
-          <span>admin@test.com / 123456</span>
-          <span>road@test.com / 123456</span>
-          <span>superadmin@test.com / 123456</span>
-        </div> */}
+        <p className="auth-switch">
+          Admin? <Link to="/admin-login">Admin Login</Link> · Super Admin?{" "}
+          <Link to="/super-admin-login">Super Admin Login</Link>
+        </p>
       </section>
     </main>
   );

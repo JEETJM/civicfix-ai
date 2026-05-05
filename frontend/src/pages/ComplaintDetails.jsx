@@ -14,7 +14,7 @@ import Loader from "../components/Loader";
 import StatusBadge from "../components/StatusBadge";
 import UrgencyBadge from "../components/UrgencyBadge";
 import ComplaintTimeline from "../components/ComplaintTimeline";
-
+import FeedbackForm from "../components/FeedbackForm";
 const ComplaintDetails = () => {
   const { id } = useParams();
 
@@ -99,6 +99,9 @@ const ComplaintDetails = () => {
             <ComplaintTimeline timeline={timeline} />
           </div>
         </section>
+        <div className="details-card">
+          <FeedbackForm complaint={complaint} onSuccess={fetchComplaint} />
+        </div>
 
         <aside className="details-side">
           <div className="details-card">
@@ -133,18 +136,17 @@ const ComplaintDetails = () => {
           <div className="details-card">
             <h3>Complaint Image</h3>
 
-            {complaint.imageUrl ? (
+            {complaint.imageUrl ?
               <img
                 className="complaint-image-preview"
                 src={complaint.imageUrl}
                 alt={complaint.title}
               />
-            ) : (
-              <div className="no-image-box">
+            : <div className="no-image-box">
                 <Image size={30} />
                 <p>No image added</p>
               </div>
-            )}
+            }
           </div>
         </aside>
       </div>

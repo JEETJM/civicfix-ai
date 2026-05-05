@@ -1,0 +1,225 @@
+.escalation-page,
+.feedback-page {
+  min-height: calc(100vh - 140px);
+  padding: 52px 6%;
+}
+
+.escalation-header,
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 26px;
+}
+
+.escalation-header span,
+.feedback-header span {
+  color: #2563eb;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+.escalation-header h1,
+.feedback-header h1 {
+  font-size: clamp(34px, 5vw, 58px);
+  color: #0f172a;
+  margin: 8px 0;
+}
+
+.escalation-header p,
+.feedback-header p {
+  color: #64748b;
+  font-size: 18px;
+}
+
+.escalation-list {
+  display: grid;
+  gap: 18px;
+}
+
+.escalation-card,
+.feedback-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  border-radius: 28px;
+}
+
+.escalation-card {
+  display: grid;
+  grid-template-columns: 70px 1fr 210px;
+  gap: 18px;
+  align-items: center;
+  padding: 22px;
+}
+
+.escalation-icon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.escalation-content h3,
+.feedback-card h3 {
+  color: #0f172a;
+  margin: 10px 0;
+}
+
+.escalation-content p,
+.feedback-card p {
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.escalation-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.escalation-meta span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.escalation-action {
+  display: grid;
+  gap: 10px;
+}
+
+.escalation-action select {
+  width: 100%;
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.feedback-card {
+  padding: 22px;
+}
+
+.feedback-top {
+  display: flex;
+  justify-content: space-between;
+  color: #2563eb;
+  font-weight: 900;
+}
+
+.feedback-rating,
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+  color: #f59e0b;
+}
+
+.star-btn {
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+
+.star-btn.active {
+  color: #f59e0b;
+}
+
+.feedback-form {
+  display: grid;
+  gap: 14px;
+}
+
+.feedback-form textarea {
+  min-height: 120px;
+  resize: vertical;
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  padding: 14px 15px;
+  border-radius: 15px;
+  outline: none;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.feedback-card small {
+  color: #64748b;
+  font-weight: 800;
+}
+
+/* Dark mode */
+[data-theme="dark"] .escalation-header h1,
+[data-theme="dark"] .feedback-header h1,
+[data-theme="dark"] .escalation-content h3,
+[data-theme="dark"] .feedback-card h3 {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .escalation-header p,
+[data-theme="dark"] .feedback-header p,
+[data-theme="dark"] .escalation-content p,
+[data-theme="dark"] .feedback-card p,
+[data-theme="dark"] .feedback-card small {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .escalation-card,
+[data-theme="dark"] .feedback-card {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border-color: rgba(148, 163, 184, 0.32) !important;
+}
+
+[data-theme="dark"] .escalation-meta span,
+[data-theme="dark"] .escalation-action select,
+[data-theme="dark"] .feedback-form textarea {
+  background: #111827 !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .feedback-form textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+@media (max-width: 1050px) {
+  .feedback-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .escalation-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .feedback-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .escalation-header,
+  .feedback-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

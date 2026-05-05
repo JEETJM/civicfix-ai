@@ -1,4 +1,11 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 import {
   getMyProfile,
@@ -21,7 +28,9 @@ const getSavedUser = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(getSavedUser);
-  const [token, setToken] = useState(() => localStorage.getItem("civicfix_token"));
+  const [token, setToken] = useState(() =>
+    localStorage.getItem("civicfix_token")
+  );
   const [loading, setLoading] = useState(true);
 
   const isAuthenticated = Boolean(user && token);
@@ -43,35 +52,51 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = useCallback(
-    async (credentials) => {
+    async (credentials, options = {}) => {
       const data = await loginUser(credentials);
+
       saveAuth(data);
-      toast.success("Login successful");
-      return data;
+
+      if (!options.silent) {
+        toast.success("Login successful");
+      }
+
+      return data.user;
     },
     [saveAuth]
   );
 
   const register = useCallback(
-    async (userData) => {
+    async (userData, options = {}) => {
       const data = await registerUser(userData);
+
       saveAuth(data);
-      toast.success("Registration successful");
-      return data;
+
+      if (!options.silent) {
+        toast.success("Registration successful");
+      }
+
+      return data.user;
     },
     [saveAuth]
   );
 
-  const logout = useCallback(async () => {
-    try {
-      await logoutUser();
-    } catch {
-      // ignore logout API error
-    }
+  const logout = useCallback(
+    async (options = {}) => {
+      try {
+        await logoutUser();
+      } catch {
+        // ignore logout API error
+      }
 
-    clearAuth();
-    toast.success("Logged out successfully");
-  }, [clearAuth]);
+      clearAuth();
+
+      if (!options.silent) {
+        toast.success("Logged out successfully");
+      }
+    },
+    [clearAuth]
+  );
 
   const refreshProfile = useCallback(async () => {
     const savedToken = localStorage.getItem("civicfix_token");
@@ -107,7 +132,16 @@ export const AuthProvider = ({ children }) => {
       logout,
       refreshProfile,
     }),
-    [user, token, loading, isAuthenticated, login, register, logout, refreshProfile]
+    [
+      user,
+      token,
+      loading,
+      isAuthenticated,
+      login,
+      register,
+      logout,
+      refreshProfile,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

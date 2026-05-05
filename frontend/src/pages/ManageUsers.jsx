@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Save, Search, Users } from "lucide-react";
+import { CheckCircle2, Save, Search, ShieldAlert, Users, XCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   getSuperAdminUsers,
@@ -43,16 +43,50 @@ const ManageUsers = () => {
       await updateSuperAdminUser(user._id, {
         role: user.role,
         isActive: user.isActive,
-        trustScore: user.trustScore,
+        trustScore: user.role === "citizen" ? user.trustScore : undefined,
+        approvalStatus: user.approvalStatus,
       });
 
       toast.success("User updated");
+      fetchUsers();
     } catch (error) {
       toast.error(error.message || "User update failed");
     }
   };
 
+  const approveAdmin = async (user) => {
+    try {
+      await updateSuperAdminUser(user._id, {
+        approvalStatus: "Approved",
+        isActive: true,
+      });
+
+      toast.success("Admin approved successfully");
+      fetchUsers();
+    } catch (error) {
+      toast.error(error.message || "Approval failed");
+    }
+  };
+
+  const rejectAdmin = async (user) => {
+    try {
+      await updateSuperAdminUser(user._id, {
+        approvalStatus: "Rejected",
+        isActive: false,
+      });
+
+      toast.success("Admin request rejected");
+      fetchUsers();
+    } catch (error) {
+      toast.error(error.message || "Reject failed");
+    }
+  };
+
   if (loading) return <Loader text="Loading users..." />;
+
+  const pendingAdmins = users.filter(
+    (user) => user.role === "admin" && user.approvalStatus === "Pending"
+  );
 
   return (
     <main className="admin-panel-page">
@@ -60,9 +94,48 @@ const ManageUsers = () => {
         <div>
           <span>Super Admin</span>
           <h1>Manage Users</h1>
-          <p>Activate, deactivate, and change roles of users.</p>
+          <p>Approve admin requests, activate users, and manage roles.</p>
         </div>
       </section>
+
+      {pendingAdmins.length > 0 && (
+        <section className="admin-table-card approval-request-card">
+          <div className="table-title">
+            <ShieldAlert size={20} />
+            <h2>{pendingAdmins.length} Pending Admin Requests</h2>
+          </div>
+
+          <div className="approval-grid">
+            {pendingAdmins.map((user) => (
+              <div className="approval-card" key={user._id}>
+                <div>
+                  <h3>{user.name}</h3>
+                  <p>{user.email}</p>
+                  <small>{user.city || "No city added"}</small>
+                </div>
+
+                <div className="approval-actions">
+                  <button
+                    className="approve-btn"
+                    onClick={() => approveAdmin(user)}
+                  >
+                    <CheckCircle2 size={17} />
+                    Approve
+                  </button>
+
+                  <button
+                    className="reject-btn"
+                    onClick={() => rejectAdmin(user)}
+                  >
+                    <XCircle size={17} />
+                    Reject
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="admin-filter-bar">
         <div className="search-box">
@@ -105,7 +178,8 @@ const ManageUsers = () => {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Role</th>
-                  <th>Trust</th>
+                  <th>Approval</th>
+                  <th>Citizen Trust</th>
                   <th>Active</th>
                   <th>Save</th>
                 </tr>
@@ -117,6 +191,7 @@ const ManageUsers = () => {
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.phone || "N/A"}</td>
+
                     <td>
                       <select
                         value={user.role}
@@ -130,15 +205,48 @@ const ManageUsers = () => {
                         <option value="super_admin">Super Admin</option>
                       </select>
                     </td>
+
                     <td>
-                      <input
-                        type="number"
-                        value={user.trustScore || 50}
-                        onChange={(event) =>
-                          updateUserField(user._id, "trustScore", event.target.value)
-                        }
-                      />
+                      {user.role === "admin" ? (
+                        <select
+                          value={user.approvalStatus || "Pending"}
+                          onChange={(event) =>
+                            updateUserField(
+                              user._id,
+                              "approvalStatus",
+                              event.target.value
+                            )
+                          }
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Approved">Approved</option>
+                          <option value="Rejected">Rejected</option>
+                        </select>
+                      ) : (
+                        <span className="approval-pill approved-pill">
+                          Approved
+                        </span>
+                      )}
                     </td>
+
+                    <td>
+                      {user.role === "citizen" ? (
+                        <input
+                          type="number"
+                          value={user.trustScore || 50}
+                          onChange={(event) =>
+                            updateUserField(
+                              user._id,
+                              "trustScore",
+                              event.target.value
+                            )
+                          }
+                        />
+                      ) : (
+                        <span className="muted-cell">Not applicable</span>
+                      )}
+                    </td>
+
                     <td>
                       <select
                         value={String(user.isActive)}
@@ -154,6 +262,7 @@ const ManageUsers = () => {
                         <option value="false">Inactive</option>
                       </select>
                     </td>
+
                     <td>
                       <button
                         className="table-save-btn"

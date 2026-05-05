@@ -1,0 +1,123 @@
+.tracking-page {
+  min-height: calc(100vh - 140px);
+  padding: 52px 6%;
+}
+
+.tracking-header {
+  margin-bottom: 26px;
+}
+
+.tracking-header span {
+  color: #2563eb;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+.tracking-header h1 {
+  font-size: clamp(34px, 5vw, 58px);
+  color: #0f172a;
+  margin: 8px 0;
+}
+
+.tracking-header p {
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.tracking-card,
+.tracking-result-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  border-radius: 28px;
+}
+
+.tracking-card {
+  max-width: 520px;
+  padding: 28px;
+}
+
+.tracking-result-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.tracking-result-card {
+  padding: 24px;
+}
+
+.tracking-result-card h2 {
+  color: #0f172a;
+  margin: 12px 0;
+}
+
+.tracking-result-card p {
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.tracking-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.tracking-info-grid div {
+  padding: 15px;
+  border-radius: 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.tracking-info-grid strong {
+  display: block;
+  color: #0f172a;
+  font-size: 18px;
+}
+
+.tracking-info-grid span {
+  color: #64748b;
+  font-weight: 900;
+}
+
+[data-theme="dark"] .tracking-header h1,
+[data-theme="dark"] .tracking-result-card h2,
+[data-theme="dark"] .tracking-info-grid strong {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .tracking-header p,
+[data-theme="dark"] .tracking-result-card p,
+[data-theme="dark"] .tracking-info-grid span {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .tracking-card,
+[data-theme="dark"] .tracking-result-card {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border-color: rgba(148, 163, 184, 0.32) !important;
+}
+
+[data-theme="dark"] .tracking-info-grid div {
+  background: #111827 !important;
+  border-color: #334155 !important;
+}
+
+@media (max-width: 900px) {
+  .tracking-result-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-card {
+    max-width: 100%;
+  }
+
+  .tracking-info-grid {
+    grid-template-columns: 1fr;
+  }
+}

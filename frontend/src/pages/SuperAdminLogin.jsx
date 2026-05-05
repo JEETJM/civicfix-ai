@@ -1,22 +1,26 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Crown, LogIn } from "lucide-react";
+import toast from "react-hot-toast";
+
 import useAuth from "../hooks/useAuth";
 import { USER_ROLES } from "../utils/rolePermissions";
 
 const SuperAdminLogin = () => {
-  const { login, logout } = useAuth();
   const navigate = useNavigate();
+  const { login, logout } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
+    setError("");
+
     setFormData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -25,21 +29,28 @@ const SuperAdminLogin = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     setError("");
     setLoading(true);
 
     try {
-      const data = await login(formData);
+      const loggedInUser = await login(formData, { silent: true });
 
-      if (data.user.role !== USER_ROLES.SUPER_ADMIN) {
-        await logout();
-        setError("This login page is only for Super Admin account.");
+      if (loggedInUser?.role !== USER_ROLES.SUPER_ADMIN) {
+        await logout({ silent: true });
+
+        const message = "This login page is only for Super Admin accounts.";
+        setError(message);
+        toast.error(message);
         return;
       }
 
-      navigate("/super-admin-dashboard", { replace: true });
+      toast.success("Super Admin login successful");
+      navigate("/super-admin-dashboard");
     } catch (err) {
-      setError(err.message || "Super Admin login failed");
+      const message = err.message || "Super Admin login failed.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -47,16 +58,18 @@ const SuperAdminLogin = () => {
 
   return (
     <main className="auth-page">
-      <section className="auth-card super-admin-card">
+      <section className="auth-card">
         <div className="auth-brand">
-          <Crown size={38} />
+          <Crown size={42} />
           <h1>Super Admin Login</h1>
-          <p>Restricted system control access for the project owner.</p>
+          <p>
+            Login to control users, departments, reports, and system settings.
+          </p>
         </div>
 
-        {error && <div className="form-error">{error}</div>}
+        {error && <div className="auth-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <label>
             Super Admin Email
             <input
@@ -81,14 +94,17 @@ const SuperAdminLogin = () => {
             />
           </label>
 
-          <button className="auth-submit super-admin-btn" disabled={loading}>
+          <button className="auth-submit" disabled={loading}>
             <LogIn size={18} />
             {loading ? "Logging in..." : "Login as Super Admin"}
           </button>
+          <p className="auth-switch">
+            Forgot password? <Link to="/forgot-password">Reset Password</Link>
+          </p>
         </form>
 
         <p className="auth-switch">
-          Admin? <Link to="/admin-login">Admin Login</Link>
+          Citizen? <Link to="/login">Citizen Login</Link>
         </p>
       </section>
     </main>
