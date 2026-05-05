@@ -600,3 +600,89 @@ select {
   background: rgba(127, 29, 29, 0.45);
   color: #fecaca;
 }
+
+
+
+
+
+
+
+
+
+[data-theme="dark"] .complaint-header h1,
+[data-theme="dark"] .complaint-card h3,
+[data-theme="dark"] .priority-top h3,
+[data-theme="dark"] .ai-placeholder h3,
+[data-theme="dark"] .details-hero h1,
+[data-theme="dark"] .details-card h2,
+[data-theme="dark"] .details-card h3,
+[data-theme="dark"] .timeline-head h4,
+[data-theme="dark"] .empty-state h3 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .complaint-header p,
+[data-theme="dark"] .complaint-desc,
+[data-theme="dark"] .ai-placeholder p,
+[data-theme="dark"] .priority-reason,
+[data-theme="dark"] .details-card p,
+[data-theme="dark"] .timeline-content p,
+[data-theme="dark"] .empty-state p,
+[data-theme="dark"] .info-line {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .complaint-form-card,
+[data-theme="dark"] .priority-score-card,
+[data-theme="dark"] .ai-placeholder,
+[data-theme="dark"] .complaint-card,
+[data-theme="dark"] .details-card,
+[data-theme="dark"] .details-hero,
+[data-theme="dark"] .empty-state,
+[data-theme="dark"] .complaint-count-box {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+[data-theme="dark"] .complaint-form input,
+[data-theme="dark"] .complaint-form textarea,
+[data-theme="dark"] .complaint-form select,
+[data-theme="dark"] .complaint-toolbar input,
+[data-theme="dark"] .complaint-toolbar select,
+[data-theme="dark"] .input-with-icon,
+[data-theme="dark"] .priority-reason,
+[data-theme="dark"] .complaint-meta-grid div,
+[data-theme="dark"] .timeline-content,
+[data-theme="dark"] .no-image-box,
+[data-theme="dark"] .search-box {
+  background: #111827;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .complaint-form label {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .secondary-action-btn {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .info-note {
+  background: rgba(120, 53, 15, 0.32);
+  border-color: rgba(245, 158, 11, 0.28);
+  color: #fde68a;
+}
+
+[data-theme="dark"] .duplicate-alert {
+  background: rgba(124, 45, 18, 0.32);
+  border-color: rgba(251, 146, 60, 0.28);
+}
+
+[data-theme="dark"] .duplicate-alert h3,
+[data-theme="dark"] .duplicate-alert p,
+[data-theme="dark"] .duplicate-reason {
+  color: #fed7aa;
+}

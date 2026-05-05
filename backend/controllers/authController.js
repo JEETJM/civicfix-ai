@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
-const { USER_ROLES, ALL_ROLES } = require("../constants/userRoles");
+const { USER_ROLES } = require("../constants/userRoles");
 
 const sendAuthResponse = (res, statusCode, user, message) => {
   const token = generateToken(user._id, user.role);
@@ -36,6 +36,19 @@ const registerUser = async (req, res, next) => {
     if (existingUser) {
       res.status(400);
       throw new Error("User already exists with this email.");
+    }
+
+    let finalRole = USER_ROLES.CITIZEN;
+
+    if (role === USER_ROLES.DEPARTMENT_OFFICER) {
+      finalRole = USER_ROLES.DEPARTMENT_OFFICER;
+    }
+
+    if (role === USER_ROLES.ADMIN || role === USER_ROLES.SUPER_ADMIN) {
+      res.status(403);
+      throw new Error(
+        "Admin and Super Admin accounts cannot be created from public registration."
+      );
     }
 
     const user = await User.create({

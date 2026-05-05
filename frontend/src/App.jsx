@@ -9,6 +9,8 @@ import RoleBasedRoute from "./components/RoleBasedRoute";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Login from "./pages/Login";
+import AdminLogin from "./pages/AdminLogin";
+import SuperAdminLogin from "./pages/SuperAdminLogin";
 import Register from "./pages/Register";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -17,10 +19,9 @@ import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import MapView from "./pages/MapView";
 import ReportIssue from "./pages/ReportIssue";
 import MyComplaints from "./pages/MyComplaints";
+import ComplaintDetails from "./pages/ComplaintDetails";
 import TrackComplaint from "./pages/TrackComplaint";
 import NotFound from "./pages/NotFound";
-import AdminLogin from "./pages/AdminLogin";
-import SuperAdminLogin from "./pages/SuperAdminLogin";
 
 import { USER_ROLES } from "./utils/rolePermissions";
 
@@ -105,8 +106,16 @@ function App() {
           }
         />
 
-        <Route path="/track-complaint" element={<TrackComplaint />} />
+        <Route
+          path="/complaints/:id"
+          element={
+            <ProtectedRoute>
+              <ComplaintDetails />
+            </ProtectedRoute>
+          }
+        />
 
+        <Route path="/track-complaint" element={<TrackComplaint />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
