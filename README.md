@@ -1,111 +1,58 @@
-# CivicFix AI 🚀  
-### AI-Assisted Smart Civic Complaint Management System
+<div align="center">
 
-CivicFix AI is a smart civic issue reporting and resolution tracking platform where citizens can report local problems such as broken roads, garbage, drainage issues, waterlogging, streetlight faults, and unsafe public infrastructure with photo, location, and description.
+<!-- Animated Top Banner -->
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=900&size=34&duration=2500&pause=700&color=2563EB&center=true&vCenter=true&width=950&lines=CivicFix+AI+%F0%9F%9A%80;Smart+Civic+Complaint+Platform;AI+Priority+%7C+Heatmap+%7C+OTP+Tracking;Built+with+MERN+Stack" alt="CivicFix AI Animated Header" />
 
-The system uses AI-assisted priority scoring, duplicate complaint detection, department routing, civic heatmap visualization, OTP-based complaint tracking, admin verification, department workflow, before/after proof upload, escalation monitoring, and citizen feedback.
+<br />
 
----
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2563EB,50:06B6D4,100:22C55E&height=180&section=header&text=CivicFix%20AI&fontSize=55&fontColor=ffffff&animation=fadeIn&fontAlignY=35&desc=AI-Assisted%20Smart%20Civic%20Complaint%20Management%20System&descAlignY=58&descSize=18" />
 
-## 🌟 Live Demo
+<br />
 
-🔗 Live Website: https://civicfix-ai-jmdz.onrender.com  
-🔗 GitHub Repository: https://github.com/JEETJM/civicfix-ai
+<p>
+  <img src="https://img.shields.io/badge/Project-CivicFix%20AI-2563EB?style=for-the-badge&logo=googlemaps&logoColor=white" />
+  <img src="https://img.shields.io/badge/Stack-MERN-22C55E?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Status-Hackathon%20Ready-06B6D4?style=for-the-badge&logo=rocket&logoColor=white" />
+</p>
 
----
+<p>
+  <img src="https://img.shields.io/badge/Frontend-React%20%2B%20Vite-61DAFB?style=flat-square&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/Backend-Node%20%2B%20Express-111827?style=flat-square&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Database-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Deploy-Render-000000?style=flat-square&logo=render&logoColor=white" />
+  <img src="https://img.shields.io/badge/Images-Cloudinary-3448C5?style=flat-square&logo=cloudinary&logoColor=white" />
+  <img src="https://img.shields.io/badge/Email-Brevo%20SMTP-0B996E?style=flat-square&logo=gmail&logoColor=white" />
+</p>
 
-## 📌 Problem Statement
+<h3>🚀 AI Priority • Duplicate Detection • Department Routing • Heatmap • OTP Tracking • Before/After Proof</h3>
 
-In many cities, civic complaints are reported through slow, manual, and disconnected systems. Citizens often do not know whether their complaint has been reviewed, assigned, or resolved. Departments may receive duplicate complaints, low-priority and high-priority issues may not be separated properly, and there is limited transparency in resolution proof.
-
-CivicFix AI solves this by creating a transparent, AI-assisted complaint management platform for citizens, admins, departments, and super admins.
-
----
-
-## 💡 Proposed Solution
-
-CivicFix AI provides a complete digital workflow:
-
-1. Citizen submits complaint with title, description, category, image, and location.
-2. AI engine analyzes category, urgency, department, and priority score.
-3. Duplicate detection checks similar complaints.
-4. Admin verifies and assigns/reassigns department.
-5. Department officer updates progress and uploads before/after proof.
-6. Complaint can be escalated if unresolved.
-7. Citizen tracks complaint using Complaint ID + OTP.
-8. Citizen gives feedback after resolution.
-9. Dashboard and heatmap show real-time civic issue insights.
+</div>
 
 ---
 
-## ✨ Key Features
+## 🌐 Live Links
 
-### 👤 Citizen Features
-
-- Register and login
-- Report civic issue
-- Upload complaint image
-- Auto/manual location input
-- AI priority score preview
-- Track submitted complaints
-- View complaint timeline
-- OTP-based complaint tracking
-- Give feedback after resolution
-- Profile settings and profile picture
-
-### 🏢 Department Officer Features
-
-- View assigned complaints
-- Filter by status and urgency
-- Update complaint status
-- Add work remarks
-- Upload before-work proof
-- Upload after-work proof
-- Mark complaint as resolved
-- Monitor department performance
-
-### 🛡️ Admin Features
-
-- View all complaints
-- Verify complaints
-- Edit category and priority
-- Assign/reassign departments
-- Monitor department progress
-- View analytics
-- View public heatmap
-- Manage escalations
-- View citizen feedback
-
-### 👑 Super Admin Features
-
-- Manage users
-- Approve/reject admin requests
-- Manage departments
-- Manage roles
-- View system analytics
-- Monitor escalations
-- View citizen feedback
-- Control active/inactive users
+| Type | Link |
+|---|---|
+| 🚀 Live Demo | `https://civicfix-ai-jmdz.onrender.com` |
+| 💻 GitHub Repo | `https://github.com/JEETJM/civicfix-ai` |
+| 👨‍💻 Developer | **Jeet Mondal** |
 
 ---
 
-## 🧠 AI-Assisted Modules
-
-### 1. AI Priority Engine
-
-The system calculates priority score using:
-
-- Complaint category
-- Urgency keywords
-- Public safety risk
-- Location sensitivity
-- Complaint severity
-- Infrastructure impact
-
-Example:
+## 🏷️ Top Highlights
 
 ```txt
-Open electric wire near school
-AI Score: 92/100
-Urgency: Critical
-Department: Streetlight & Electricity
+✅ AI-assisted civic complaint priority scoring
+✅ Citizen, Admin, Super Admin, Department Officer dashboards
+✅ Complaint image upload using Cloudinary
+✅ Before/After proof upload by department officer
+✅ Public civic heatmap using Mapbox
+✅ OTP-based forgot password system using Brevo SMTP
+✅ OTP-based complaint tracking
+✅ Admin request approval by Super Admin
+✅ Escalation center for unresolved complaints
+✅ Citizen feedback and trust score
+✅ Dark/Light mode
+✅ Fully responsive UI
+✅ Render deployment ready
