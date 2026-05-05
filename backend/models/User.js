@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema(
       minlength: [2, "Name must be at least 2 characters"],
       maxlength: [60, "Name cannot exceed 60 characters"],
     },
+    profileImage: {
+      type: String,
+      default: "",
+    },
 
     email: {
       type: String,
@@ -95,7 +99,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 userSchema.pre("save", async function () {

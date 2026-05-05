@@ -7,6 +7,7 @@ import {
   MapPinned,
   Menu,
   Moon,
+  Settings,
   ShieldCheck,
   Sun,
   UserCircle,
@@ -30,6 +31,7 @@ const Navbar = () => {
   };
 
   const dashboardPath = user ? getDashboardPathByRole(user.role) : "/dashboard";
+  const avatarLetter = user?.name?.charAt(0)?.toUpperCase() || "U";
 
   return (
     <header className="navbar">
@@ -73,11 +75,27 @@ const Navbar = () => {
               Dashboard
             </NavLink>
 
-            <div className="nav-user-pill">
-              <UserCircle size={18} />
-              <span>{user?.name}</span>
-              <small>{roleLabels[user?.role]}</small>
-            </div>
+            <NavLink to="/profile-settings" onClick={() => setOpen(false)}>
+              <Settings size={17} />
+              Settings
+            </NavLink>
+
+            <Link
+              to="/profile-settings"
+              className="nav-profile-pill"
+              onClick={() => setOpen(false)}
+            >
+              {user?.profileImage ? (
+                <img src={user.profileImage} alt={user?.name} />
+              ) : (
+                <span>{avatarLetter}</span>
+              )}
+
+              <div>
+                <strong>{user?.name}</strong>
+                <small>{roleLabels[user?.role]}</small>
+              </div>
+            </Link>
 
             <button className="nav-logout" onClick={handleLogout}>
               <LogOut size={17} />

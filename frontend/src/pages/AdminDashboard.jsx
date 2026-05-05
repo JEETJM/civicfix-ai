@@ -5,16 +5,19 @@ import {
   GitMerge,
   ListChecks,
   MapPinned,
+  ShieldCheck,
   Users,
 } from "lucide-react";
+
 import DashboardStats from "../components/DashboardStats";
 import useAuth from "../hooks/useAuth";
 import Loader from "../components/Loader";
-import { getDashboardAnalytics } from "../services/analyticsService";
 import ChartCard from "../components/ChartCard";
+import { getDashboardAnalytics } from "../services/analyticsService";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
+
   const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -68,10 +71,14 @@ const AdminDashboard = () => {
         <div>
           <span>Admin Dashboard</span>
           <h1>Welcome, {user?.name}</h1>
-          <p>Monitor complaints, manage departments, and analyze civic data.</p>
+          <p>
+            Monitor complaints, verify reports, assign departments, and analyze
+            civic data.
+          </p>
         </div>
 
         <Link to="/analytics" className="primary-btn">
+          <BarChart3 size={18} />
           View Analytics
         </Link>
       </section>
@@ -80,21 +87,21 @@ const AdminDashboard = () => {
 
       <section className="dashboard-grid">
         <div className="dashboard-card big-card">
-          {/* <h2>Admin Controls</h2>
-          <div className="feature-list">
-            <p>View all complaints</p>
-            <p>Verify complaints</p>
-            <p>Edit category and priority</p>
-            <p>Merge duplicate complaints</p>
-            <p>Assign or reassign department</p>
-            <p>Monitor department progress</p>
-          </div>
-        </div> */}
+          <ShieldCheck size={32} />
+          <h2>Admin Controls</h2>
 
           <div className="feature-list">
-            <Link to="/admin/complaints">View & manage all complaints</Link>
-            <Link to="/analytics">View analytics dashboard</Link>
-            <Link to="/map">View public heatmap</Link>
+            <p>
+              <Link to="/admin/complaints">View & manage all complaints</Link>
+            </p>
+            <p>
+              {" "}
+              <Link to="/analytics">View analytics dashboard</Link>
+            </p>
+            <p>
+              {" "}
+              <Link to="/map">View public heatmap</Link>
+            </p>
             <p>Verify complaints</p>
             <p>Assign or reassign department</p>
             <p>Monitor department progress</p>

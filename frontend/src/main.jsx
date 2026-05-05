@@ -14,6 +14,7 @@ import "./styles/complaint.css";
 import "./styles/map.css";
 import "./styles/responsive.css";
 import "./styles/adminPanel.css";
+import "./styles/profile.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>

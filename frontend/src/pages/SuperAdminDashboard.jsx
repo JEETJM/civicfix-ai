@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
-import { Activity, BarChart3, Building2, Settings, Shield, Users } from "lucide-react";
+import {
+  Activity,
+  BarChart3,
+  Building2,
+  Settings,
+  Shield,
+  Users,
+} from "lucide-react";
 import DashboardStats from "../components/DashboardStats";
 import useAuth from "../hooks/useAuth";
 
@@ -19,7 +26,9 @@ const SuperAdminDashboard = () => {
         <div>
           <span>Super Admin Dashboard</span>
           <h1>System Control, {user?.name}</h1>
-          <p>Manage users, departments, complaints, analytics, and system rules.</p>
+          <p>
+            Manage users, departments, complaints, analytics, and system rules.
+          </p>
         </div>
       </section>
 
@@ -30,11 +39,21 @@ const SuperAdminDashboard = () => {
           <h2>Super Admin Controls</h2>
 
           <div className="feature-list">
-            <Link to="/super-admin/users">Manage users and roles</Link>
-            <Link to="/super-admin/departments">Manage departments</Link>
-            <Link to="/admin/complaints">Manage all complaints</Link>
-            <Link to="/analytics">View analytics</Link>
-            <Link to="/map">View public heatmap</Link>
+            <p>
+              <Link to="/super-admin/users">Manage users and roles</Link>
+            </p>
+            <p>
+              <Link to="/super-admin/departments">Manage departments</Link>
+            </p>
+            <p>
+              <Link to="/admin/complaints">Manage all complaints</Link>
+            </p>
+            <p>
+              <Link to="/analytics">View analytics</Link>
+            </p>
+            <p>
+              <Link to="/map">View public heatmap</Link>
+            </p>
             <p>System settings and escalation rules coming next.</p>
           </div>
         </div>

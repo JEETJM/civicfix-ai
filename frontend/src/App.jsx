@@ -23,12 +23,12 @@ import ComplaintDetails from "./pages/ComplaintDetails";
 import TrackComplaint from "./pages/TrackComplaint";
 import NotFound from "./pages/NotFound";
 import Analytics from "./pages/Analytics";
-import { USER_ROLES } from "./utils/rolePermissions";
-
 import AdminComplaints from "./pages/AdminComplaints";
 import AdminComplaintDetails from "./pages/AdminComplaintDetails";
 import ManageUsers from "./pages/ManageUsers";
 import ManageDepartments from "./pages/ManageDepartments";
+import ProfileSettings from "./pages/ProfileSettings";
+import { USER_ROLES } from "./utils/rolePermissions";
 
 function App() {
   return (
@@ -160,6 +160,15 @@ function App() {
               <RoleBasedRoute allowedRoles={[USER_ROLES.CITIZEN]}>
                 <ReportIssue />
               </RoleBasedRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile-settings"
+          element={
+            <ProtectedRoute>
+              <ProfileSettings />
             </ProtectedRoute>
           }
         />

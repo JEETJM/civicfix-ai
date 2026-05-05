@@ -1,6 +1,10 @@
 const express = require("express");
 const upload = require("../middleware/uploadMiddleware");
-const { uploadImage } = require("../controllers/uploadController");
+const {
+  uploadImage,
+  uploadProfileImage,
+  removeProfileImage,
+} = require("../controllers/uploadController");
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -13,5 +17,14 @@ router.get("/test", (req, res) => {
 });
 
 router.post("/image", protect, upload.single("image"), uploadImage);
+
+router.post(
+  "/profile-image",
+  protect,
+  upload.single("image"),
+  uploadProfileImage
+);
+
+router.delete("/profile-image", protect, removeProfileImage);
 
 module.exports = router;

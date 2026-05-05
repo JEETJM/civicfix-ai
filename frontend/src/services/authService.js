@@ -24,3 +24,8 @@ export const updateMyProfile = async (profileData) => {
   const { data } = await api.put("/auth/me", profileData);
   return data;
 };
+
+export const changeMyPassword = async (passwordData) => {
+  const { data } = await api.put("/auth/change-password", passwordData);
+  return data;
+};
