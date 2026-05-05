@@ -1,0 +1,580 @@
+✅ 1. docs/api-documentation.md
+# CivicFix AI API Documentation## Base URLsLocal:```txthttp://localhost:8080/api
+Production:
+https://civicfix-ai-jmdz.onrender.com/api
+
+1. Health APIs
+Check API Health
+GET /health
+Response:
+{ "success": true, "message": "CivicFix AI API is healthy", "service": "CivicFix AI", "environment": "development", "database": "connected"}
+
+2. Auth APIs
+Register User
+POST /auth/register
+Body:
+{ "name": "Jeet Mondal", "email": "jeet@example.com", "phone": "9876543210", "password": "123456", "role": "citizen", "city": "Kolkata", "address": "West Bengal"}
+Allowed public roles:
+citizendepartment_officeradmin
+Note:
+Admin registration goes to Pending approval.Super Admin cannot be registered publicly.
+
+Login User
+POST /auth/login
+Body:
+{ "email": "jeet@example.com", "password": "123456"}
+Admin login rule:
+Admin can login only after Super Admin approval.
+
+Logout
+POST /auth/logout
+
+Get My Profile
+GET /auth/me
+Header:
+Authorization: Bearer TOKEN
+
+Update My Profile
+PUT /auth/me
+Body:
+{ "name": "Jeet Mondal", "phone": "9876543210", "city": "Kolkata", "address": "Agarpara"}
+
+Change Password
+PUT /auth/change-password
+Body:
+{ "currentPassword": "123456", "newPassword": "newpass123"}
+
+3. OTP APIs
+Send Forgot Password OTP
+POST /otp/forgot-password
+Body:
+{ "email": "jeet@example.com"}
+Function:
+Creates OTP in MongoDB and sends OTP to email using Brevo SMTP.
+
+Reset Password With OTP
+POST /otp/reset-password
+Body:
+{ "email": "jeet@example.com", "otp": "123456", "newPassword": "newpass123"}
+
+Send Complaint Tracking OTP
+POST /otp/track-complaint/send
+Body:
+{ "complaintId": "CFX-2026-123456", "email": "jeet@example.com"}
+Function:
+Checks complaint owner email, stores OTP in DB, sends OTP to registered email.
+
+Verify Complaint Tracking OTP
+POST /otp/track-complaint/verify
+Body:
+{ "complaintId": "CFX-2026-123456", "email": "jeet@example.com", "otp": "123456"}
+Response includes:
+Complaint detailsStatus timelineDepartment details
+
+4. Complaint APIs
+Create Complaint
+POST /complaints
+Header:
+Authorization: Bearer TOKEN
+Body:
+{ "title": "Broken road near main gate", "description": "Road is damaged and dangerous for vehicles.", "category": "Road", "city": "Kolkata", "address": "Agarpara", "imageUrl": "https://res.cloudinary.com/..."}
+
+Get My Complaints
+GET /complaints/my
+
+Get Complaint Details
+GET /complaints/:id
+
+5. Admin Panel APIs
+Get All Complaints
+GET /admin-panel/complaints
+Allowed roles:
+adminsuper_admin
+
+Get Complaint Details
+GET /admin-panel/complaints/:id
+
+Update Complaint By Admin
+PUT /admin-panel/complaints/:id
+Body:
+{ "status": "Assigned to Department", "department": "Road Maintenance", "urgency": "High", "aiScore": 85, "adminRemark": "Verified and assigned."}
+
+6. Department Panel APIs
+Get Department Performance
+GET /department-panel/performance
+
+Get Assigned Complaints
+GET /department-panel/complaints
+Query examples:
+?status=In Progress?urgency=High?search=road
+
+Get Assigned Complaint Details
+GET /department-panel/complaints/:id
+
+Update Department Complaint Status
+PUT /department-panel/complaints/:id/status
+Body:
+{ "status": "In Progress", "workRemark": "Team has started road repair work."}
+Allowed statuses:
+Assigned to DepartmentIn ProgressResolvedEscalated
+
+Upload Resolution Proof
+POST /department-panel/complaints/:id/proof
+Form Data:
+image: fileproofType: before / afterworkRemark: Work update message
+
+7. Super Admin APIs
+Get System Stats
+GET /super-admin-panel/stats
+
+Get All Users
+GET /super-admin-panel/users
+Query examples:
+?role=admin?search=jeet
+
+Update User
+PUT /super-admin-panel/users/:id
+Body:
+{ "role": "admin", "isActive": true, "approvalStatus": "Approved"}
+Approval statuses:
+PendingApprovedRejected
+
+Get Departments
+GET /super-admin-panel/departments
+
+Create Department
+POST /super-admin-panel/departments
+Body:
+{ "name": "Road Maintenance", "category": "Road", "officerName": "Officer Name", "email": "road@test.com", "phone": "9999999999", "description": "Handles road-related complaints."}
+
+Update Department
+PUT /super-admin-panel/departments/:id
+
+8. Upload APIs
+Upload Complaint Image
+POST /upload/image
+Form Data:
+image: file
+
+Upload Profile Image
+POST /upload/profile-image
+Form Data:
+image: file
+
+Remove Profile Image
+DELETE /upload/profile-image
+
+9. Analytics APIs
+Dashboard Analytics
+GET /analytics/dashboard
+
+10. Feedback APIs
+Submit Feedback
+POST /feedback
+Body:
+{ "complaintId": "COMPLAINT_OBJECT_ID_OR_COMPLAINT_ID", "rating": 5, "comment": "Issue resolved properly."}
+
+Get My Feedbacks
+GET /feedback/my
+
+Get All Feedbacks
+GET /feedback/all
+Allowed roles:
+adminsuper_admin
+
+11. Escalation APIs
+Get Escalations
+GET /escalations
+
+Run Auto Escalation Check
+POST /escalations/run-check
+
+Manual Escalate Complaint
+POST /escalations/complaints/:id/manual
+Body:
+{ "reason": "Complaint pending for too long."}
+
+Update Escalation Status
+PUT /escalations/:id
+Body:
+{ "status": "Reviewed"}
+---                                                                                                                      # ✅ 2. `docs/database-schema.md````md # CivicFix AI Database Schema OverviewCivicFix AI uses MongoDB with Mongoose.--- ## 1. User ModelStores citizens, department officers, admins, and super admins.Main fields:```txtnameemailphonepasswordrolecityaddressprofileImagetrustScoretrustBadgeisActiveisApprovedapprovalStatusapprovedByapprovedAtcreatedAtupdatedAt
+Roles:
+citizendepartment_officeradminsuper_admin
+Admin approval:
+PendingApprovedRejected
+Purpose:
+Citizen accountDepartment officer accountAdmin account approvalSuper Admin controlProfile managementTrust score tracking
+
+2. Complaint Model
+Stores civic complaints.
+Main fields:
+complaintIdtitledescriptioncategoryurgencyaiScoredepartmentlocationimageUrlstatusreportedByassignedDepartmentIdisDuplicateduplicateOfisEscalatedescalatedAtfeedbackGivencitizenRatingadminRemarkdepartmentRemarkresolvedAtcreatedAtupdatedAt
+Statuses:
+SubmittedAI AnalyzedDuplicate CheckedAssigned to DepartmentIn ProgressResolvedClosedRejectedEscalated
+Purpose:
+Store complaint detailsTrack progressConnect citizen/admin/departmentSupport AI scoreSupport heatmapSupport proof and feedback
+
+3. Department Model
+Stores department information.
+Main fields:
+namecategoryofficerNameemailphonedescriptionactiveComplaintsresolvedComplaintsisActivecreatedAtupdatedAt
+Example departments:
+Road MaintenanceSanitationDrainageStreetlight & ElectricityWater SupplyPublic SafetyParks & EnvironmentTrafficHealth & HygieneGeneral Civic
+
+4. OTP Model
+Stores OTP records for forgot password and complaint tracking.
+Main fields:
+emailphoneotppurposecomplaintIdisUsedemailSentemailErrorexpiresAtcreatedAtupdatedAt
+Purposes:
+FORGOT_PASSWORDCOMPLAINT_TRACKING
+Rules:
+OTP expires after 10 minutesOTP is stored in MongoDBOTP is sent using Brevo SMTPOTP is marked used after verification
+
+5. StatusTimeline Model
+Stores complaint progress history.
+Main fields:
+complaintstatustitlemessageupdatedByupdatedByRolecreatedAtupdatedAt
+Purpose:
+Show complaint journeyAdmin updatesDepartment updatesProof upload updatesFeedback updatesEscalation updates
+
+6. ResolutionProof Model
+Stores before and after proof images.
+Main fields:
+complaintcomplaintIddepartmentuploadedBybeforeImageUrlafterImageUrlworkRemarkproofStatuscreatedAtupdatedAt
+Proof statuses:
+PendingBefore UploadedAfter UploadedCompleted
+Purpose:
+Transparent resolution proofDepartment accountabilityBefore/after evidence
+
+7. Feedback Model
+Stores citizen feedback after resolution.
+Main fields:
+complaintcomplaintIdcitizenratingcommentisSatisfiedcreatedAtupdatedAt
+Purpose:
+Collect citizen satisfactionImprove accountabilityUpdate trust score
+
+8. EscalationLog Model
+Stores escalation data.
+Main fields:
+complaintcomplaintIdoldLevelnewLevelreasonescalatedByescalationTypestatuscreatedAtupdatedAt
+Escalation types:
+AutoManual
+Escalation statuses:
+OpenReviewedResolved
+Purpose:
+Track delayed complaintsAlert higher authorityAdmin/Super Admin review
+
+9. DuplicateReport Model
+Stores duplicate complaint detection results.
+Main fields:
+complaintduplicateOfsimilarityScorereasoncreatedAtupdatedAt
+Purpose:
+Reduce repeated complaintsMerge similar issuesImprove admin workflow
+
+10. HeatmapZone Model
+Stores civic issue zones.
+Main fields:
+zoneNamecitycomplaintCountriskLevelcoordinatescreatedAtupdatedAt
+Risk levels:
+LowMediumHighCritical
+
+11. ActivityLog Model
+Stores important system actions.
+Main fields:
+useractionroledescriptionipAddresscreatedAtupdatedAt
+Purpose:
+Admin activity trackingAudit trailSecurity monitoring
+---                                                   # ✅ 3. `docs/deployment-guide.md````md # CivicFix AI Deployment GuideThis guide explains how to deploy CivicFix AI on Render.--- ## 1. Platforms Used```txtFrontend: React + ViteBackend: Node.js + ExpressDatabase: MongoDB AtlasImage Storage: CloudinaryEmail OTP: Brevo SMTPDeployment: Render
+
+2. MongoDB Atlas Setup
+
+Create MongoDB Atlas account.
+
+Create cluster.
+
+Create database user.
+
+Go to Network Access.
+
+Add IP:
+
+0.0.0.0/0
+
+Copy connection string.
+
+Example:
+mongodb+srv://username:password@cluster0.mongodb.net/CivicFixAI
+If password has special character:
+@ = %40                                                         # = %23$ = %24% = %25& = %26
+
+3. Cloudinary Setup
+Cloudinary is used for:
+Profile imagesComplaint imagesBefore/after proof images
+Required env:
+CLOUDINARY_CLOUD_NAME=your_cloud_nameCLOUDINARY_API_KEY=your_api_keyCLOUDINARY_API_SECRET=your_api_secret
+
+4. Brevo SMTP Setup
+Brevo is used for:
+Forgot password OTPComplaint tracking OTP
+Required env:
+BREVO_HOST=smtp-relay.brevo.comBREVO_PORT=587BREVO_USER=your_brevo_smtp_loginBREVO_PASS=your_brevo_smtp_keyBREVO_FROM_EMAIL=your_verified_sender_email@gmail.comBREVO_FROM_NAME=CivicFix AI
+Important:
+BREVO_PASS must be SMTP key, not Gmail password.BREVO_FROM_EMAIL must be a verified sender email.
+
+5. Local Backend .env
+File:
+backend/.env
+NODE_ENV=developmentPORT=8080MONGO_URI=your_mongodb_atlas_uriJWT_SECRET=your_super_secret_keyJWT_EXPIRES_IN=7dCLIENT_URL=http://localhost:5173CLOUDINARY_CLOUD_NAME=your_cloud_nameCLOUDINARY_API_KEY=your_cloudinary_api_keyCLOUDINARY_API_SECRET=your_cloudinary_api_secretBREVO_HOST=smtp-relay.brevo.comBREVO_PORT=587BREVO_USER=your_brevo_smtp_loginBREVO_PASS=your_brevo_smtp_keyBREVO_FROM_EMAIL=your_verified_sender_email@gmail.comBREVO_FROM_NAME=CivicFix AI
+
+6. Local Frontend .env
+File:
+frontend/.env
+VITE_API_URL=http://localhost:8080/apiVITE_MAPBOX_TOKEN=your_mapbox_token
+
+7. Root package.json
+File:
+package.json
+{ "scripts": { "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend", "start": "npm start --prefix backend" }}
+
+8. Backend package.json
+File:
+backend/package.json
+{ "scripts": { "start": "node server.js", "dev": "nodemon server.js" }}
+
+9. Render Web Service Settings
+Root Directory: blankBuild Command: npm run buildStart Command: npm start
+
+10. Render Environment Variables
+NODE_ENV=productionPORT=8080MONGO_URI=your_mongodb_atlas_uriJWT_SECRET=your_super_secret_keyJWT_EXPIRES_IN=7dCLIENT_URL=https://civicfix-ai-jmdz.onrender.comCLOUDINARY_CLOUD_NAME=your_cloud_nameCLOUDINARY_API_KEY=your_cloudinary_api_keyCLOUDINARY_API_SECRET=your_cloudinary_api_secretBREVO_HOST=smtp-relay.brevo.comBREVO_PORT=587BREVO_USER=your_brevo_smtp_loginBREVO_PASS=your_brevo_smtp_keyBREVO_FROM_EMAIL=your_verified_sender_email@gmail.comBREVO_FROM_NAME=CivicFix AI
+
+11. Git Push
+git add .git commit -m "Deploy CivicFix AI"git push
+
+12. Render Deploy
+Render Dashboard:
+Manual Deploy → Deploy latest commit
+
+13. Production Test
+Open:
+https://civicfix-ai-jmdz.onrender.com
+Test:
+RegisterLoginReport issueAdmin assignDepartment updateOTP trackingForgot passwordImage uploadDark modeMobile responsive
+---                                                                                                                     # ✅ 4. `docs/demo-script.md````md # CivicFix AI Demo Script ## Short IntroductionHello everyone, this is CivicFix AI, a smart civic complaint management system built with MERN stack.It helps citizens report local issues like broken roads, garbage, drainage blockage, streetlight failure, waterlogging, public safety problems, and more.The system supports AI priority scoring, duplicate detection, department routing, public heatmap, OTP tracking, before/after proof, escalation, feedback, and role-based dashboards.--- ## 2-Minute PitchCivicFix AI is an AI-assisted civic complaint platform designed to make city issue reporting faster, smarter, and more transparent.Citizens can report complaints with image, location, and description. The system analyzes the complaint and generates priority score, urgency level, and department route. Admins verify and assign complaints to departments. Department officers update progress and upload before/after proof. Citizens can securely track complaints using Complaint ID and OTP. After resolution, citizens can give feedback.This improves transparency, accountability, and faster response in civic issue management.--- ## 5-Minute Demo Flow ### Step 1: Home PageShow:```txtModern homepageCivicFix AI brandingTrack complaint linkHeatmap linkRole-based login buttonsDark/light mode
+Say:
+This is the homepage of CivicFix AI. From here, citizens can report issues, track complaints, and view public heatmap.
+
+Step 2: Citizen Register/Login
+Show:
+Citizen registrationProfile image uploadLoginCitizen dashboard
+Say:
+Citizens can create an account, upload profile picture, and access their personal dashboard.
+
+Step 3: Report Complaint
+Example complaint:
+Title: Open electric wire near schoolDescription: There is an open electric wire near the school gate. Children are passing nearby and it can cause electric shock.City: KolkataAddress: Agarpara School GateImage: Upload complaint image
+Show:
+AI scoreUrgencyDepartment routeComplaint saved
+Say:
+The system analyzes the complaint and gives a priority score, urgency, and department route.
+
+Step 4: Admin Dashboard
+Login as Admin.
+Show:
+All complaintsVerify complaintAssign/reassign departmentAnalyticsHeatmapFeedbackEscalation center
+Say:
+Admin can verify complaints, assign departments, monitor progress, and analyze civic data.
+
+Step 5: Department Officer Dashboard
+Login as Department Officer.
+Show:
+Assigned complaintsWork panelStatus updateWork remarksBefore proof uploadAfter proof uploadMark as resolved
+Say:
+Department officers can update work progress and upload before/after proof for transparency.
+
+Step 6: Track Complaint With OTP
+Open:
+Track Complaint page
+Show:
+Enter Complaint IDEnter registered emailSend OTPOTP received in GmailVerify OTPView complaint details and timeline
+Say:
+Citizens can securely track complaints without login using Complaint ID and OTP.
+
+Step 7: Feedback
+Show:
+Resolved complaintFeedback formRatingCommentTrust score update
+Say:
+After resolution, citizens can give feedback, which improves accountability.
+
+Step 8: Super Admin Dashboard
+Login as Super Admin.
+Show:
+Manage usersApprove admin requestManage departmentsView complaintsView analyticsView escalationsView feedback
+Say:
+Super Admin controls the whole system, approves admins, manages departments, and monitors everything.
+
+Demo Login Examples
+Citizen:email: citizen@test.compassword: 123456Admin:email: admin@test.compassword: 123456Department Officer:email: road@test.compassword: 123456Super Admin:email: superadmin@test.compassword: 123456
+Update these according to your seeded users.
+
+Closing Statement
+CivicFix AI creates a complete transparent civic issue resolution workflow. It connects citizens, admins, departments, and super admins in one platform with AI scoring, OTP tracking, proof upload, heatmap analytics, and feedback.
+This project can help smart cities improve public service response, reduce duplicate complaints, and increase accountability.
+---                                                                                                                                                                                                                                   # ✅ 5. `docs/role-wise-features.md````md # CivicFix AI Role-wise Features ## 1. CitizenCitizen is the main public user.Features:```txtRegister accountLoginUpload profile pictureEdit profileReport complaintUpload complaint imageAdd city and addressView AI scoreView urgencyView assigned departmentView own complaintsOpen complaint detailsView status timelineTrack complaint using OTPForgot password using OTPSubmit feedback after resolutionView trust score
+Pages:
+/register/login/user-dashboard/report-issue/my-complaints/complaints/:id/track-complaint/profile-settings
+
+2. Department Officer
+Department officer handles assigned complaints.
+Features:
+LoginView department dashboardView assigned complaintsSearch complaintsFilter by statusFilter by urgencyOpen work panelUpdate statusAdd work remarksUpload before proofUpload after proofMark complaint as resolvedView performance stats
+Pages:
+/department-dashboard/department/complaints/department/complaints/:id/profile-settings
+
+3. Admin
+Admin manages complaints and monitors progress.
+Features:
+LoginView admin dashboardView all complaintsSearch and filter complaintsVerify complaintsUpdate complaint categoryUpdate urgencyUpdate AI scoreAssign departmentReassign departmentAdd admin remarksMonitor department progressView analyticsView heatmapView escalation centerView citizen feedback
+Pages:
+/admin-login/admin-dashboard/admin/complaints/admin/complaints/:id/analytics/map/escalations/feedback/profile-settings
+
+4. Super Admin
+Super Admin has complete system control.
+Features:
+LoginView super admin dashboardApprove admin requestsReject admin requestsManage usersChange user roleActivate/deactivate usersManage departmentsCreate departmentUpdate departmentView all complaintsView analyticsView heatmapView escalationsView feedback
+Pages:
+/super-admin-login/super-admin-dashboard/super-admin/users/super-admin/departments/admin/complaints/analytics/map/escalations/feedback/profile-settings
+
+5. Public User
+Public users can access some pages without login.
+Features:
+View homepageView about pageView public heatmapTrack complaint using OTPForgot password
+Pages:
+//about/map/track-complaint/forgot-password/reset-password
+---                                                                                     # ✅ 6. `docs/system-workflow.md````md # CivicFix AI System Workflow ## 1. User Registration Workflow```txtUser opens Register page↓Selects role: Citizen / Department Officer / Admin Request↓Enters profile details↓Uploads optional profile image↓Account is created
+Citizen and Department Officer:
+Can login immediately
+Admin:
+Status becomes PendingCannot login until Super Admin approves
+Super Admin:
+Not publicly registeredCreated manually or using seeder
+
+2. Admin Approval Workflow
+User registers as Admin Request↓Account status = Pending↓Admin tries login↓System blocks login↓Super Admin opens Manage Users↓Super Admin approves or rejects↓If approved, admin can login↓If rejected, admin remains blocked
+
+3. Complaint Reporting Workflow
+Citizen logs in↓Opens Report Issue↓Enters title, description, category, location↓Uploads image↓System creates complaint↓AI priority score is generated↓Department route is selected↓Complaint is stored in database↓Citizen can view complaint in My Complaints
+
+4. AI Complaint Analysis Workflow
+Complaint title + description submitted↓AI scoring utility checks urgency keywords↓Category and department are mapped↓Priority score is calculated↓Urgency level is assigned↓Complaint receives AI analysis result
+Output:
+AI ScoreUrgencyDepartmentCategory
+
+5. Admin Complaint Workflow
+Admin logs in↓Opens Admin Dashboard↓Opens All Complaints↓Reviews complaint↓Verifies issue↓Assigns or reassigns department↓Adds admin remark↓Status becomes Assigned to Department
+
+6. Department Officer Workflow
+Department Officer logs in↓Opens Department Dashboard↓Views assigned complaints↓Opens complaint work panel↓Updates status to In Progress↓Adds work remark↓Uploads before proof↓Completes work↓Uploads after proof↓Marks complaint as Resolved
+
+7. Complaint Status Flow
+Normal flow:
+Submitted↓AI Analyzed↓Duplicate Checked↓Assigned to Department↓In Progress↓Resolved↓Closed
+Problem flow:
+Assigned to Department / In Progress↓Escalated↓Admin / Super Admin Review↓Reassign / Follow up / Resolve
+
+8. OTP Forgot Password Workflow
+User opens Forgot Password↓Enters registered email↓System generates OTP↓OTP is stored in MongoDB↓OTP is sent to Gmail using Brevo SMTP↓User opens Reset Password↓Enters OTP and new password↓System verifies OTP↓Password is updated
+
+9. OTP Complaint Tracking Workflow
+User opens Track Complaint↓Enters Complaint ID and registered email↓System checks complaint owner↓System generates OTP↓OTP is stored in MongoDB↓OTP is sent to Gmail using Brevo SMTP↓User enters OTP↓System verifies OTP↓Complaint details and timeline are shown
+
+10. Feedback Workflow
+Complaint becomes Resolved↓Citizen opens complaint details↓Feedback form becomes visible↓Citizen gives rating and comment↓Feedback is stored↓Citizen trust score updates↓Admin can view feedback
+
+11. Escalation Workflow
+Manual escalation:
+Admin reviews complaint↓Complaint is urgent or delayed↓Admin escalates complaint manually↓Escalation log is created↓Super Admin/Admin reviews it
+Auto escalation:
+System checks unresolved complaints↓Critical issue pending too long↓Complaint becomes Escalated↓Escalation log is created
+
+12. Heatmap Workflow
+Complaints are created with location↓System groups complaints by area↓Complaint density is calculated↓Heatmap shows civic issue hotspots
+Zones:
+Green = Low issue densityYellow = Medium issue densityRed = High issue density
+---                                                                                                                                            # ✅ 7. `docs/department-list.md````md # CivicFix AI Department ListCivicFix AI uses civic departments for complaint routing.--- ## 1. Road MaintenanceHandles:```txtBroken roadsPotholesDamaged footpathsRoad cracksRoad repair complaints
+
+2. Sanitation
+Handles:
+Garbage collectionDustbin overflowStreet cleaningWaste managementUnclean public areas
+
+3. Drainage
+Handles:
+Blocked drainsWaterloggingDrain overflowSewage blockageRainwater drainage issues
+
+4. Streetlight & Electricity
+Handles:
+Streetlight not workingOpen electric wireDamaged electric polePublic lighting issueElectric safety problem
+
+5. Water Supply
+Handles:
+No water supplyDirty waterWater leakagePipe burstLow water pressure
+
+6. Public Safety
+Handles:
+Unsafe public placeBroken public barrierDangerous constructionAccident-prone areaEmergency civic risk
+
+7. Parks & Environment
+Handles:
+Park damageTree fallPublic garden issuePollutionEnvironmental complaints
+
+8. Traffic
+Handles:
+Traffic signal issueRoad blockageIllegal parkingTraffic congestionPublic transport issue
+
+9. Health & Hygiene
+Handles:
+Mosquito breedingPublic health riskDirty public toiletDisease-prone areaHygiene complaint
+
+10. General Civic
+Handles:
+Other civic issuesUnclear categoryManual review complaintsUnmapped complaints
+---                                                                                                                                                                                                                                                      # ✅ 8. `docs/hackathon-submission.md````md # CivicFix AI Hackathon Submission ## Project NameCivicFix AI ## TaglineReport smarter. Fix faster. ## Short DescriptionCivicFix AI is an AI-assisted smart civic complaint management system that allows citizens to report civic issues with photo, location, and description. The system generates priority score, detects duplicates, routes complaints to departments, provides heatmap visualization, supports OTP complaint tracking, and ensures transparent resolution using before/after proof. ## Tech Stack```txtReact.jsViteNode.jsExpress.jsMongoDBMongooseJWTCloudinaryBrevo SMTPMapboxRender
+Key Features
+AI Priority ScoreDuplicate DetectionDepartment RoutingPublic HeatmapOTP Complaint TrackingForgot Password OTPAdmin Approval SystemBefore/After Proof UploadEscalation CenterCitizen FeedbackTrust ScoreRole-Based DashboardsDark/Light ModeResponsive UI
+User Roles
+CitizenDepartment OfficerAdminSuper Admin
+Main Demo Flow
+Citizen reports complaintAI analyzes complaintAdmin verifies and assigns departmentDepartment officer updates workBefore/after proof uploadedCitizen tracks using OTPCitizen gives feedbackSuper Admin monitors system
+Impact
+CivicFix AI improves civic issue reporting by making the process faster, transparent, and accountable. It helps citizens track complaints, helps departments prioritize work, and helps city admins monitor civic issue hotspots.
+Future Scope
+Mobile appSMS OTPReal AI/ML model integrationGovernment portal integrationPush notificationsWard-wise analyticsMultilingual supportOfficer attendance integration
+Developer
+Jeet Mondal
+GitHub:
+https://github.com/JEETJM
+LinkedIn:
+https://www.linkedin.com/in/jm1904/
+Email:
+jm382118@gmail.com
+---                                                                                                                                                                                                                                                      # ✅ 9. `docs/future-scope.md````md # CivicFix AI Future Scope ## 1. Mobile ApplicationBuild Android/iOS app for faster citizen complaint reporting. ## 2. SMS OTPAdd SMS OTP for users who do not use email. ## 3. Real AI/ML ModelIntegrate machine learning model for:```txtComplaint category predictionPriority scoringDuplicate detectionFake complaint detectionImage-based issue detection
+4. Government Portal Integration
+Connect CivicFix AI with municipal/government systems.
+5. Ward-wise Analytics
+Add ward/zone-based dashboards for city officials.
+6. Push Notifications
+Add real-time notifications for:
+Complaint assignedStatus changedComplaint resolvedComplaint escalatedFeedback requested
+7. Multilingual Support
+Add support for:
+EnglishBengaliHindiOther regional languages
+8. Officer Attendance Integration
+Track department officer availability and work assignment.
+9. Public Transparency Portal
+Show resolved complaints, proof images, and public service performance.
+10. AI Chat Assistant
+Add chatbot for:
+Complaint guidanceStatus helpDepartment helpFAQ
+---                                                                                                                                                                                                                                                      ## ✅ Final docs folder structure```txtdocs/├── api-documentation.md├── database-schema.md├── deployment-guide.md├── demo-script.md├── role-wise-features.md├── system-workflow.md├── department-list.md├── hackathon-submission.md└── future-scope.md
+Git push:
+git add .git commit -m "Add final CivicFix AI documentation"git push
