@@ -7,22 +7,28 @@ import {
   MapPinned,
   Menu,
   Moon,
+  SearchCheck,
   Settings,
   ShieldCheck,
   Sun,
-  UserCircle,
   X,
 } from "lucide-react";
 import { useState } from "react";
+
 import useAuth from "../hooks/useAuth";
 import { useTheme } from "../context/ThemeContext";
 import { getDashboardPathByRole, roleLabels } from "../utils/rolePermissions";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+
   const { user, isAuthenticated, logout } = useAuth();
   const { isDark, toggleTheme } = useTheme();
+
   const navigate = useNavigate();
+
+  const dashboardPath = user ? getDashboardPathByRole(user.role) : "/dashboard";
+  const avatarLetter = user?.name?.charAt(0)?.toUpperCase() || "U";
 
   const handleLogout = async () => {
     await logout();
@@ -30,21 +36,24 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const dashboardPath = user ? getDashboardPathByRole(user.role) : "/dashboard";
-  const avatarLetter = user?.name?.charAt(0)?.toUpperCase() || "U";
-
   return (
     <header className="navbar">
-      <Link to="/" className="nav-logo">
+      <Link to="/" className="nav-logo" onClick={() => setOpen(false)}>
         <span className="logo-icon">
           <ShieldCheck size={22} />
         </span>
+
         <span>
           CivicFix <b>AI</b>
         </span>
       </Link>
 
-      <button className="mobile-menu-btn" onClick={() => setOpen(!open)}>
+      <button
+        type="button"
+        className="mobile-menu-btn"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-label="Toggle navigation menu"
+      >
         {open ? <X size={24} /> : <Menu size={24} />}
       </button>
 
@@ -56,6 +65,11 @@ const Navbar = () => {
         <NavLink to="/map" onClick={() => setOpen(false)}>
           <MapPinned size={17} />
           Heatmap
+        </NavLink>
+
+        <NavLink to="/track-complaint" onClick={() => setOpen(false)}>
+          <SearchCheck size={17} />
+          Track
         </NavLink>
 
         <NavLink to="/about" onClick={() => setOpen(false)}>
@@ -86,26 +100,30 @@ const Navbar = () => {
               onClick={() => setOpen(false)}
             >
               {user?.profileImage ? (
-                <img src={user.profileImage} alt={user?.name} />
+                <img src={user.profileImage} alt={user?.name || "Profile"} />
               ) : (
                 <span>{avatarLetter}</span>
               )}
 
               <div>
                 <strong>{user?.name}</strong>
-                <small>{roleLabels[user?.role]}</small>
+                <small>{roleLabels[user?.role] || user?.role}</small>
               </div>
             </Link>
 
-            <button className="nav-logout" onClick={handleLogout}>
+            <button className="nav-logout" onClick={handleLogout} type="button">
               <LogOut size={17} />
               Logout
             </button>
           </>
         ) : (
           <div className="nav-auth">
-            <Link to="/login" className="nav-login" onClick={() => setOpen(false)}>
-              Citizen & Officer Login
+            <Link
+              to="/login"
+              className="nav-login"
+              onClick={() => setOpen(false)}
+            >
+              Citizen Login
             </Link>
 
             <Link
