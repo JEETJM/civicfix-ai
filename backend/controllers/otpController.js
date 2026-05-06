@@ -5,46 +5,88 @@ const StatusTimeline = require("../models/StatusTimeline");
 const generateOTP = require("../utils/generateOTP");
 const sendOTPEmail = require("../utils/sendOTP");
 
+const sendEmailInBackground = async ({
+  otpRecordId,
+  email,
+  otp,
+  purpose,
+  complaintId,
+}) => {
+  try {
+    await sendOTPEmail({
+      to: email,
+      otp,
+      purpose,
+      complaintId,
+    });
+
+    await OTP.findByIdAndUpdate(otpRecordId, {
+      emailSent: true,
+      emailError: "",
+    });
+
+    console.log(`✅ OTP email sent successfully to ${email}`);
+  } catch (error) {
+    await OTP.findByIdAndUpdate(otpRecordId, {
+      emailSent: false,
+      emailError: error.message || "Email sending failed.",
+    });
+
+    console.error("❌ OTP email sending failed:", error.message);
+  }
+};
+
 const createOTPRecord = async ({
   email,
   phone = "",
   purpose,
   complaintId = "",
 }) => {
+  const cleanEmail = email.toLowerCase().trim();
+  const cleanComplaintId = complaintId ? complaintId.trim() : "";
   const otp = generateOTP();
 
   await OTP.deleteMany({
-    email,
+    email: cleanEmail,
     purpose,
-    complaintId,
+    complaintId: cleanComplaintId,
     isUsed: false,
   });
 
   const otpRecord = await OTP.create({
-    email,
+    email: cleanEmail,
     phone,
     otp,
     purpose,
-    complaintId,
+    complaintId: cleanComplaintId,
     expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    emailSent: false,
+    emailError: "Email sending started...",
   });
 
-  await sendOTPEmail({
-    to: email,
-    otp,
-    purpose,
-    complaintId,
+  // ✅ Main Render fix: response wait korbe na, email background-e jabe
+  setImmediate(() => {
+    sendEmailInBackground({
+      otpRecordId: otpRecord._id,
+      email: cleanEmail,
+      otp,
+      purpose,
+      complaintId: cleanComplaintId,
+    });
   });
 
   return otpRecord;
 };
 
 const verifyOTPRecord = async ({ email, otp, purpose, complaintId = "" }) => {
+  const cleanEmail = email.toLowerCase().trim();
+  const cleanComplaintId = complaintId ? complaintId.trim() : "";
+
   const record = await OTP.findOne({
-    email,
+    email: cleanEmail,
     otp,
     purpose,
-    complaintId,
+    complaintId: cleanComplaintId,
     isUsed: false,
     expiresAt: { $gt: new Date() },
   });
@@ -59,6 +101,7 @@ const verifyOTPRecord = async ({ email, otp, purpose, complaintId = "" }) => {
   return record;
 };
 
+// POST /api/otp/forgot-password
 const sendForgotPasswordOTP = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -68,27 +111,32 @@ const sendForgotPasswordOTP = async (req, res, next) => {
       throw new Error("Email is required.");
     }
 
-    const user = await User.findOne({ email });
+    const cleanEmail = email.toLowerCase().trim();
+
+    const user = await User.findOne({ email: cleanEmail });
 
     if (!user) {
       res.status(404);
       throw new Error("No account found with this email.");
     }
 
-    await createOTPRecord({
+    const otpRecord = await createOTPRecord({
       email: user.email,
       purpose: "FORGOT_PASSWORD",
     });
 
     return res.status(200).json({
       success: true,
-      message: "Password reset OTP sent to your email.",
+      message: "OTP generated. Please check your Gmail inbox or spam folder.",
+      emailQueued: true,
+      otpId: otpRecord._id,
     });
   } catch (error) {
     next(error);
   }
 };
 
+// POST /api/otp/reset-password
 const resetPasswordWithOTP = async (req, res, next) => {
   try {
     const { email, otp, newPassword } = req.body;
@@ -114,7 +162,9 @@ const resetPasswordWithOTP = async (req, res, next) => {
       throw new Error("Invalid or expired OTP.");
     }
 
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({
+      email: email.toLowerCase().trim(),
+    }).select("+password");
 
     if (!user) {
       res.status(404);
@@ -133,6 +183,7 @@ const resetPasswordWithOTP = async (req, res, next) => {
   }
 };
 
+// POST /api/otp/track-complaint/send
 const sendComplaintTrackingOTP = async (req, res, next) => {
   try {
     const { complaintId, email } = req.body;
@@ -142,36 +193,42 @@ const sendComplaintTrackingOTP = async (req, res, next) => {
       throw new Error("Complaint ID and email are required.");
     }
 
-    const complaint = await Complaint.findOne({ complaintId }).populate(
-      "reportedBy",
-      "name email phone"
-    );
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanComplaintId = complaintId.trim();
+
+    const complaint = await Complaint.findOne({
+      complaintId: cleanComplaintId,
+    }).populate("reportedBy", "name email phone");
 
     if (!complaint) {
       res.status(404);
       throw new Error("Complaint not found.");
     }
 
-    if (complaint.reportedBy?.email !== email) {
+    if (complaint.reportedBy?.email !== cleanEmail) {
       res.status(403);
       throw new Error("This email is not linked with this complaint.");
     }
 
-    await createOTPRecord({
-      email,
+    const otpRecord = await createOTPRecord({
+      email: cleanEmail,
       purpose: "COMPLAINT_TRACKING",
-      complaintId,
+      complaintId: complaint.complaintId,
     });
 
     return res.status(200).json({
       success: true,
-      message: "Tracking OTP sent to your registered email.",
+      message:
+        "Tracking OTP generated. Please check your Gmail inbox or spam folder.",
+      emailQueued: true,
+      otpId: otpRecord._id,
     });
   } catch (error) {
     next(error);
   }
 };
 
+// POST /api/otp/track-complaint/verify
 const verifyComplaintTrackingOTP = async (req, res, next) => {
   try {
     const { complaintId, email, otp } = req.body;
@@ -181,11 +238,13 @@ const verifyComplaintTrackingOTP = async (req, res, next) => {
       throw new Error("Complaint ID, email and OTP are required.");
     }
 
+    const cleanComplaintId = complaintId.trim();
+
     const record = await verifyOTPRecord({
       email,
       otp,
       purpose: "COMPLAINT_TRACKING",
-      complaintId,
+      complaintId: cleanComplaintId,
     });
 
     if (!record) {
@@ -193,7 +252,9 @@ const verifyComplaintTrackingOTP = async (req, res, next) => {
       throw new Error("Invalid or expired OTP.");
     }
 
-    const complaint = await Complaint.findOne({ complaintId })
+    const complaint = await Complaint.findOne({
+      complaintId: cleanComplaintId,
+    })
       .populate("reportedBy", "name email phone")
       .populate("assignedDepartmentId", "name officerName email phone");
 
