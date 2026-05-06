@@ -1,30 +1,19 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env.MODE === "production"
-    ? "/api"
-    : import.meta.env.VITE_API_URL || "http://localhost:8080/api";
-
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_URL || "/api",
   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("civicfix_token");
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("civicfix_token");
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+  return config;
+});
 
 api.interceptors.response.use(
   (response) => response,
@@ -34,10 +23,7 @@ api.interceptors.response.use(
       error.message ||
       "Something went wrong";
 
-    return Promise.reject({
-      ...error,
-      message,
-    });
+    return Promise.reject(new Error(message));
   }
 );
 
