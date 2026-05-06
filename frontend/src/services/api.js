@@ -3,6 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "/api",
   withCredentials: true,
+  timeout: 30000,
 });
 
 api.interceptors.request.use((config) => {
@@ -21,7 +22,7 @@ api.interceptors.response.use(
     const message =
       error.response?.data?.message ||
       error.message ||
-      "Something went wrong";
+      "Connection lost. Please try again.";
 
     return Promise.reject(new Error(message));
   }
